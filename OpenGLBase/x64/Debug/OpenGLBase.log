@@ -1,5 +1,1 @@
-﻿  main.cpp
-  The contents of <filesystem> are available only with C++17 or later.
-D:\dev\projects\OpenGLBase\OpenGLBase\Shader.h(56,34): warning C4101: 'e': unreferenced local variable
-D:\dev\projects\OpenGLBase\OpenGLBase\main.cpp(96,43): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-  OpenGLBase.vcxproj -> D:\dev\projects\OpenGLBase\x64\Debug\OpenGLBase.exe
+﻿  OpenGLBase.vcxproj -> D:\dev\projects\OpenGLBase\x64\Debug\OpenGLBase.exe
