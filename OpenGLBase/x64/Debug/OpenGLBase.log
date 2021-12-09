@@ -1,4 +1,0 @@
-﻿  main.cpp
-D:\dev\projects\OpenGLBase\OpenGLBase\Shader.h(56,34): warning C4101: 'e': unreferenced local variable
-D:\dev\projects\OpenGLBase\OpenGLBase\Teapot.h(16,2): warning C4091: 'static ': ignored on left of 'TeapotImguiConfigurations' when no variable is declared
-  OpenGLBase.vcxproj -> D:\dev\projects\OpenGLBase\x64\Debug\OpenGLBase.exe
