@@ -1,25 +1,31 @@
 ﻿  Teapot.cpp
 D:\dev\projects\OpenGLBase\OpenGLBase\Shader.h(56,34): warning C4101: 'e': unreferenced local variable
 D:\dev\projects\OpenGLBase\OpenGLBase\Teapot.h(16,2): warning C4091: 'static ': ignored on left of 'TeapotImguiConfigurations' when no variable is declared
-D:\dev\projects\OpenGLBase\OpenGLBase\Teapot.cpp(31,59): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
+D:\dev\projects\OpenGLBase\OpenGLBase\Teapot.cpp(20,59): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-D:\dev\projects\OpenGLBase\OpenGLBase\Teapot.cpp(31,42): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
+D:\dev\projects\OpenGLBase\OpenGLBase\Teapot.cpp(20,42): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-D:\dev\projects\OpenGLBase\OpenGLBase\Teapot.cpp(42,49): warning C4244: 'argument': conversion from 'T' to 'GLsizei', possible loss of data
+D:\dev\projects\OpenGLBase\OpenGLBase\Teapot.cpp(31,49): warning C4244: 'argument': conversion from 'T' to 'GLsizei', possible loss of data
           with
           [
               T=float
           ]
-D:\dev\projects\OpenGLBase\OpenGLBase\Teapot.cpp(42,32): warning C4244: 'argument': conversion from 'T' to 'GLsizei', possible loss of data
+D:\dev\projects\OpenGLBase\OpenGLBase\Teapot.cpp(31,32): warning C4244: 'argument': conversion from 'T' to 'GLsizei', possible loss of data
           with
           [
               T=float
           ]
-D:\dev\projects\OpenGLBase\OpenGLBase\Teapot.cpp(138,44): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\dev\projects\OpenGLBase\OpenGLBase\Teapot.cpp(139,44): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  main.cpp
+  The contents of <filesystem> are available only with C++17 or later.
+D:\dev\projects\OpenGLBase\OpenGLBase\Shader.h(56,34): warning C4101: 'e': unreferenced local variable
+D:\dev\projects\OpenGLBase\OpenGLBase\Teapot.h(16,2): warning C4091: 'static ': ignored on left of 'TeapotImguiConfigurations' when no variable is declared
+  Generating Code...
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   OpenGLBase.vcxproj -> D:\dev\projects\OpenGLBase\x64\Debug\OpenGLBase.exe

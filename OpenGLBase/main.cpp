@@ -8,12 +8,8 @@
 
 #include "Teapot.h"
 
-glm::vec2 resolution(800, 600);
-
 int main() {
-	Teapot tp_engine(resolution);
-
-	tp_engine.init();
+	Teapot tp_engine;
 
 	tp_engine.draw();
 

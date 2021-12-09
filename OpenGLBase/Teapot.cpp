@@ -9,25 +9,14 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
-Teapot::~Teapot() {
-	ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
-
-	glDeleteVertexArrays(1, &_VAO);
-	glDeleteBuffers(1, &_VBO);
-	glDeleteBuffers(1, &_EBO);
-
-	glfwTerminate();
-}
-
-void Teapot::init()
+Teapot::Teapot() 
 {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+	_windowExtent = glm::vec2(1000, 1000);
 	_window = glfwCreateWindow(_windowExtent.x, _windowExtent.y, "Teapot Engine", NULL, NULL);
 	if (!_window) {
 		std::cerr << "Failed to create GLFW Window!" << std::endl;
@@ -44,6 +33,18 @@ void Teapot::init()
 	_init_callbacks();
 	_init_pipelines();
 	_init_imgui();
+}
+
+Teapot::~Teapot() {
+	ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
+	glDeleteVertexArrays(1, &_VAO);
+	glDeleteBuffers(1, &_VBO);
+	glDeleteBuffers(1, &_EBO);
+
+	glfwTerminate();
 }
 
 void Teapot::_init_imgui()

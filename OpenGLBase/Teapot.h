@@ -17,9 +17,8 @@ static struct TeapotImguiConfigurations {
 
 class Teapot {
 public:
-	explicit Teapot(glm::vec2 res): _windowExtent(res) {}
+	Teapot();
 	~Teapot();
-	void init();
 	void draw();
 	
 	TeapotImguiConfigurations render_vars;
