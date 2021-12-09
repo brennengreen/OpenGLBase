@@ -6,7 +6,14 @@
 
 #include <iostream>
 
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+
 Teapot::~Teapot() {
+	ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
 	glDeleteVertexArrays(1, &_VAO);
 	glDeleteBuffers(1, &_VBO);
 	glDeleteBuffers(1, &_EBO);
@@ -36,11 +43,23 @@ void Teapot::init()
 
 	_init_callbacks();
 	_init_pipelines();
+	_init_imgui();
+}
+
+void Teapot::_init_imgui()
+{
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGui::StyleColorsDark();
+	ImGui_ImplGlfw_InitForOpenGL(_window, true);
+	ImGui_ImplOpenGL3_Init("#version 330 core");
 }
 
 void Teapot::_init_callbacks()
 {
-	//glfwSetFramebufferSizeCallback(_window, framebuffer_size_callback);
+	glfwSetErrorCallback(_glfw_error_callback);
+	glfwSetFramebufferSizeCallback(_window, _framebuffer_size_callback);
 }
 
 void Teapot::_init_pipelines()
@@ -80,10 +99,27 @@ void Teapot::_init_pipelines()
 void Teapot::draw()
 {
     while (!glfwWindowShouldClose(_window)) {
-		// Process Input
-		//process_input(_window);
+		_process_input(_window);
+
+		// ImGui
+		ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+		{
+            ImGui::Begin("Teapot Configurations");                          // Create a window called "Hello, world!" and append into it.
+
+			ImGui::Checkbox("Wireframe", &render_vars.wireframe);
+            ImGui::SliderFloat("Rotation", &render_vars.rotate_var, 0, 360);            // Edit 1 float using a slider from 0.0f to 1.0f
+            ImGui::ColorEdit3("clear color", (float*)&render_vars.clear_color); // Edit 3 floats representing a color
+
+            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+            ImGui::End();
+        }
+
 		// Render
-		glClearColor(0.66f, 0.79f, 0.85f, 1.0f);
+		glPolygonMode(GL_FRONT_AND_BACK, render_vars.wireframe ? GL_LINE : GL_FILL);
+		glClearColor(render_vars.clear_color.x, render_vars.clear_color.y, render_vars.clear_color.z, render_vars.clear_color.w);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		_meshShader.use();
@@ -92,7 +128,7 @@ void Teapot::draw()
 		glm::mat4 view = glm::translate(glm::mat4(1.f), camPos);
 		glm::mat4 projection = glm::perspective(glm::radians(70.f), (float)_windowExtent.x / _windowExtent.y, 0.1f, 200.0f);
 		projection[1][1] *= -1;
-		glm::mat4 model = glm::rotate(glm::mat4{ 1.0f }, glm::radians(_frameNumber++ * 0.1f), glm::vec3(0, 1, 0));
+		glm::mat4 model = glm::rotate(glm::mat4{ 1.0f }, glm::radians(render_vars.rotate_var), glm::vec3(0, 1, 0));
 
 
 		_meshShader.setMat4("model", model);
@@ -101,9 +137,11 @@ void Teapot::draw()
 		_meshShader.setVec2("iResolution", _windowExtent);
 		_meshShader.setFloat("iTime", glfwGetTime());
 
-
 		glBindVertexArray(_VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		glfwSwapBuffers(_window);
 		glfwPollEvents();
