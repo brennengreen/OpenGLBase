@@ -38,7 +38,6 @@ As I learned more about computer graphics and video games a like, I desire more 
 ## Roadmap
 
 - [x] Initial engine refactor, focused on OOP-based design and best standards
-- [ ] Port project to CMAKE
 - [ ] Basic geometry support (spheres, cones, planes, cubes)
 - [ ] Geometry Importer
 - [ ] Scenegraph

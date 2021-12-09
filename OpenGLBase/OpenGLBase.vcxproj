@@ -24,6 +24,7 @@
     <ProjectGuid>{04d38775-da1b-4925-932b-568eb2c2c4b7}</ProjectGuid>
     <RootNamespace>OpenGLBase</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Teapot</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
