@@ -9,6 +9,8 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
+#include "Input.h"
+
 Teapot::Teapot() 
 {
 	glfwInit();
@@ -30,6 +32,7 @@ Teapot::Teapot()
 
 	glViewport(0, 0, _windowExtent.x, _windowExtent.y);
 
+	Input::Update();
 	_init_callbacks();
 	_init_pipelines();
 	_init_imgui();
@@ -57,10 +60,36 @@ void Teapot::_init_imgui()
 	ImGui_ImplOpenGL3_Init("#version 330 core");
 }
 
+void Teapot::ProcessKeyboardState()
+{
+	if(Input::IsKeyPressed(GLFW_KEY_W))
+		cam.ProcessKeyboard(CameraMovement::FORWARD, _deltaTime);
+	if(Input::IsKeyPressed(GLFW_KEY_A))
+		cam.ProcessKeyboard(CameraMovement::LEFT, _deltaTime);
+	if(Input::IsKeyPressed(GLFW_KEY_S))
+		cam.ProcessKeyboard(CameraMovement::BACKWARD, _deltaTime);
+	if(Input::IsKeyPressed(GLFW_KEY_D))
+		cam.ProcessKeyboard(CameraMovement::RIGHT, _deltaTime);
+}
+
+void Teapot::ProcessScrollState()
+{
+	glm::vec2 scroll_offset = Input::GetScrollOffset();
+	cam.ProcessMouseScroll(scroll_offset.y);
+}
+
+void Teapot::ProcessMousePosition()
+{
+	glm::vec2 mouse_offset = Input::GetMouseOffset();
+	std::cout << mouse_offset.x << " " << mouse_offset.y << std::endl;
+	cam.ProcessMouseMovement(mouse_offset.x, mouse_offset.y);
+}
+
 void Teapot::_init_callbacks()
 {
 	glfwSetErrorCallback(_glfw_error_callback);
 	glfwSetFramebufferSizeCallback(_window, _framebuffer_size_callback);
+	Input::init_glfw_input_callbacks(_window);
 }
 
 void Teapot::_init_pipelines()
@@ -100,7 +129,15 @@ void Teapot::_init_pipelines()
 void Teapot::draw()
 {
     while (!glfwWindowShouldClose(_window)) {
-		_process_input(_window);
+		ProcessKeyboardState();
+		ProcessMousePosition();
+		ProcessScrollState();
+
+		_currentFrame = glfwGetTime();
+		_deltaTime = _currentFrame - _lastFrame;
+
+
+		//Input::_process_input(_window);
 
 		// ImGui
 		ImGui_ImplOpenGL3_NewFrame();
@@ -108,11 +145,12 @@ void Teapot::draw()
         ImGui::NewFrame();
 
 		{
-            ImGui::Begin("Teapot Configurations");                          // Create a window called "Hello, world!" and append into it.
+            ImGui::Begin("Teapot Configurations");
 
 			ImGui::Checkbox("Wireframe", &render_vars.wireframe);
-            ImGui::SliderFloat("Rotation", &render_vars.rotate_var, 0, 360);            // Edit 1 float using a slider from 0.0f to 1.0f
-            ImGui::ColorEdit3("clear color", (float*)&render_vars.clear_color); // Edit 3 floats representing a color
+            ImGui::SliderFloat("Rotation", &render_vars.rotate_var, 0, 360);
+            ImGui::ColorEdit3("clear color", (float*)&render_vars.clear_color);
+            ImGui::InputFloat3("camera pos", (float*)&render_vars.camera_pos);
 
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
             ImGui::End();
@@ -125,10 +163,9 @@ void Teapot::draw()
 
 		_meshShader.use();
 
-		glm::vec3 camPos = {0.f, 0.f, -2.f};
-		glm::mat4 view = glm::translate(glm::mat4(1.f), camPos);
-		glm::mat4 projection = glm::perspective(glm::radians(70.f), (float)_windowExtent.x / _windowExtent.y, 0.1f, 200.0f);
-		projection[1][1] *= -1;
+		glm::vec3 camPos = {render_vars.camera_pos.x, render_vars.camera_pos.y, render_vars.camera_pos.z};
+		glm::mat4 view = cam.GetViewMatrix();
+		glm::mat4 projection = glm::perspective(glm::radians(90.f), (float)_windowExtent.x / (float)_windowExtent.y, 0.1f, 100.0f);
 		glm::mat4 model = glm::rotate(glm::mat4{ 1.0f }, glm::radians(render_vars.rotate_var), glm::vec3(0, 1, 0));
 
 
