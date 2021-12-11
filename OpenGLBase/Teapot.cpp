@@ -62,6 +62,8 @@ void Teapot::_init_imgui()
 
 void Teapot::ProcessKeyboardState()
 {
+	if (Input::IsKeyPressed(GLFW_KEY_ESCAPE))
+		glfwSetWindowShouldClose(_window, true);
 	if(Input::IsKeyPressed(GLFW_KEY_W))
 		cam.ProcessKeyboard(CameraMovement::FORWARD, _deltaTime);
 	if(Input::IsKeyPressed(GLFW_KEY_A))
@@ -80,9 +82,8 @@ void Teapot::ProcessScrollState()
 
 void Teapot::ProcessMousePosition()
 {
-	glm::vec2 mouse_offset = Input::GetMouseOffset();
-	std::cout << mouse_offset.x << " " << mouse_offset.y << std::endl;
-	cam.ProcessMouseMovement(mouse_offset.x, mouse_offset.y);
+	_lastOffset = Input::GetMouseOffset();
+	cam.ProcessMouseMovement(_lastOffset.x, _lastOffset.y);
 }
 
 void Teapot::_init_callbacks()
@@ -130,14 +131,11 @@ void Teapot::draw()
 {
     while (!glfwWindowShouldClose(_window)) {
 		ProcessKeyboardState();
-		ProcessMousePosition();
+		if (Input::GetMouseOffset() != _lastOffset) ProcessMousePosition();
 		ProcessScrollState();
 
 		_currentFrame = glfwGetTime();
 		_deltaTime = _currentFrame - _lastFrame;
-
-
-		//Input::_process_input(_window);
 
 		// ImGui
 		ImGui_ImplOpenGL3_NewFrame();
@@ -167,7 +165,6 @@ void Teapot::draw()
 		glm::mat4 view = cam.GetViewMatrix();
 		glm::mat4 projection = glm::perspective(glm::radians(90.f), (float)_windowExtent.x / (float)_windowExtent.y, 0.1f, 100.0f);
 		glm::mat4 model = glm::rotate(glm::mat4{ 1.0f }, glm::radians(render_vars.rotate_var), glm::vec3(0, 1, 0));
-
 
 		_meshShader.setMat4("model", model);
 		_meshShader.setMat4("view", view);

@@ -44,6 +44,9 @@ private:
 	GLdouble _deltaTime {0};
 	GLdouble _currentFrame {0};
 	GLdouble _lastFrame {0};
+
+	glm::vec2 _lastOffset {0, 0};
+
 private:
 	// Callbacks
 	static void _framebuffer_size_callback(GLFWwindow * window, int width, int height) {

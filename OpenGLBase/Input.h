@@ -24,6 +24,7 @@ public:
 
 	static inline float sensitivity = 3.1415f / 50.0f;
 
+	static bool DidMouseUpdate() { return (_lastMousePos != _mousePos);}
 	static glm::vec2 GetScrollOffset() { return _scrollOffset; }
 	static glm::vec2 GetMousePos() { return _mousePos; }
 	static glm::vec2 GetMouseOffset() { return _mouseOffset; }
