@@ -36,6 +36,9 @@ public:
 	static bool IsKeyPressed(Key key);
 	static bool IsKeyReleased(Key key);
 
+	static void SetCursorEnabled(bool value);
+	static bool IsCursorEnabled();
+
 	static inline GLFWwindow* _window;
 private:
 	// Input Buffers
@@ -44,6 +47,7 @@ private:
 	static inline glm::vec2 _mousePos;
 	static inline glm::vec2 _lastMousePos;
 	static inline glm::vec2 _mouseOffset;
+	static inline bool _cursorEnabled;
 
 	static inline KeyState _keyStates[GLFW_KEY_LAST] = {KeyState(0)};
 

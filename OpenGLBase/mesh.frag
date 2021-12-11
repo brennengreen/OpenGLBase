@@ -6,5 +6,7 @@ uniform float iTime;
 
 void main()
 {
-	FragColor = vec4(1.0);
+	vec2 uv = gl_FragCoord.xy / iResolution;
+	vec3 col = 0.5 + 0.5*cos(iTime + uv.xyx + vec3(0,2,4));
+	FragColor = vec4(col, 1.0);
 }

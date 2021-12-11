@@ -11,9 +11,7 @@
 
 
 struct TeapotImguiConfigurations {
-	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-	ImVec4 camera_pos = ImVec4(0.0f, 0.0f, -2.0f, 0.0);
-	float rotate_var = 0;
+	ImVec4 clear_color = ImVec4(0.14f, 0.14f, 0.14f, 1.00f);
 	bool wireframe = false;
 };
 

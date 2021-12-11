@@ -18,7 +18,7 @@ Teapot::Teapot()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	_windowExtent = glm::vec2(1000, 1000);
+	_windowExtent = glm::vec2(1920, 1080);
 	_window = glfwCreateWindow(_windowExtent.x, _windowExtent.y, "Teapot Engine", NULL, NULL);
 	if (!_window) {
 		std::cerr << "Failed to create GLFW Window!" << std::endl;
@@ -63,14 +63,16 @@ void Teapot::_init_imgui()
 void Teapot::ProcessKeyboardState()
 {
 	if (Input::IsKeyPressed(GLFW_KEY_ESCAPE))
-		glfwSetWindowShouldClose(_window, true);
-	if(Input::IsKeyPressed(GLFW_KEY_W))
+		Input::SetCursorEnabled(true);
+	if (Input::IsKeyPressed(GLFW_KEY_ENTER))
+		Input::SetCursorEnabled(false);
+	if(Input::IsKeyPressed(GLFW_KEY_W) && !Input::IsCursorEnabled())
 		cam.ProcessKeyboard(CameraMovement::FORWARD, _deltaTime);
-	if(Input::IsKeyPressed(GLFW_KEY_A))
+	if(Input::IsKeyPressed(GLFW_KEY_A) && !Input::IsCursorEnabled())
 		cam.ProcessKeyboard(CameraMovement::LEFT, _deltaTime);
-	if(Input::IsKeyPressed(GLFW_KEY_S))
+	if(Input::IsKeyPressed(GLFW_KEY_S) && !Input::IsCursorEnabled())
 		cam.ProcessKeyboard(CameraMovement::BACKWARD, _deltaTime);
-	if(Input::IsKeyPressed(GLFW_KEY_D))
+	if(Input::IsKeyPressed(GLFW_KEY_D) && !Input::IsCursorEnabled())
 		cam.ProcessKeyboard(CameraMovement::RIGHT, _deltaTime);
 }
 
@@ -83,7 +85,7 @@ void Teapot::ProcessScrollState()
 void Teapot::ProcessMousePosition()
 {
 	_lastOffset = Input::GetMouseOffset();
-	cam.ProcessMouseMovement(_lastOffset.x, _lastOffset.y);
+	if (!Input::IsCursorEnabled()) cam.ProcessMouseMovement(_lastOffset.x, _lastOffset.y);
 }
 
 void Teapot::_init_callbacks()
@@ -146,9 +148,7 @@ void Teapot::draw()
             ImGui::Begin("Teapot Configurations");
 
 			ImGui::Checkbox("Wireframe", &render_vars.wireframe);
-            ImGui::SliderFloat("Rotation", &render_vars.rotate_var, 0, 360);
             ImGui::ColorEdit3("clear color", (float*)&render_vars.clear_color);
-            ImGui::InputFloat3("camera pos", (float*)&render_vars.camera_pos);
 
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
             ImGui::End();
@@ -161,10 +161,9 @@ void Teapot::draw()
 
 		_meshShader.use();
 
-		glm::vec3 camPos = {render_vars.camera_pos.x, render_vars.camera_pos.y, render_vars.camera_pos.z};
 		glm::mat4 view = cam.GetViewMatrix();
 		glm::mat4 projection = glm::perspective(glm::radians(90.f), (float)_windowExtent.x / (float)_windowExtent.y, 0.1f, 100.0f);
-		glm::mat4 model = glm::rotate(glm::mat4{ 1.0f }, glm::radians(render_vars.rotate_var), glm::vec3(0, 1, 0));
+		glm::mat4 model = glm::mat4{ 1.0f };
 
 		_meshShader.setMat4("model", model);
 		_meshShader.setMat4("view", view);

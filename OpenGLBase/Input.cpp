@@ -15,6 +15,7 @@ void Input::Update()
 	_mousePos = glm::vec2(0);
 	_lastMousePos = glm::vec2(500);
 	_firstMouse = false;
+	_cursorEnabled = false;
 	glfwPollEvents();
 }
 
@@ -24,7 +25,7 @@ void Input::init_glfw_input_callbacks(GLFWwindow* window)
 	glfwSetKeyCallback(window, _process_input);
 	glfwSetScrollCallback(window, _scroll_callback);
 	glfwSetCursorPosCallback(window, _mouse_callback);
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetInputMode(window, GLFW_CURSOR, _cursorEnabled ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED);
 }
 
 Input::KeyState Input::GetKeyState(Key key)
@@ -50,6 +51,17 @@ bool Input::IsKeyPressed(Key key)
 bool Input::IsKeyReleased(Key key)
 {
 	return _keyStates[key] & Input::KeyState::released;
+}
+
+void Input::SetCursorEnabled(bool value)
+{
+	_cursorEnabled = value;
+	glfwSetInputMode(_window, GLFW_CURSOR, _cursorEnabled ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED);
+}
+
+bool Input::IsCursorEnabled()
+{
+	return _cursorEnabled;
 }
 
 void Input::_mouse_callback(GLFWwindow * window, double xpos, double ypos) {
