@@ -5,11 +5,14 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <iostream>
+#include <filesystem>
 
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
 #include "Input.h"
+
+#include "stb_image.h"
 
 Teapot::Teapot() 
 {
@@ -43,9 +46,9 @@ Teapot::~Teapot() {
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 
-	glDeleteVertexArrays(1, &_VAO);
+	/*glDeleteVertexArrays(1, &_VAO);
 	glDeleteBuffers(1, &_VBO);
-	glDeleteBuffers(1, &_EBO);
+	glDeleteBuffers(1, &_EBO);*/
 
 	glfwTerminate();
 }
@@ -97,34 +100,10 @@ void Teapot::_init_callbacks()
 
 void Teapot::_init_pipelines()
 {
+	stbi_set_flip_vertically_on_load(true);
+
 	_meshShader = Shader("mesh.vert", "mesh.frag");
-
-    float vertices[] = {
-         1.0f,  1.0f, 0.0f,  // top right
-         1.0f, -1.0f, 0.0f,  // bottom right
-        -1.0f, -1.0f, 0.0f,  // bottom left
-        -1.0f,  1.0f, 0.0f   // top left 
-    };
-    unsigned int indices[] = {  
-        0, 1, 3,  // first Triangle
-        1, 2, 3   // second Triangle
-    };
-    glGenVertexArrays(1, &_VAO);
-    glGenBuffers(1, &_VBO);
-    glGenBuffers(1, &_EBO);
-    glBindVertexArray(_VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, _VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0); 
-    glBindVertexArray(0); 
+	_model = Model((char*)"../Game/Models/Sponza/sponza.obj");
 
 	glEnable(GL_DEPTH_TEST);
 }
@@ -162,7 +141,7 @@ void Teapot::draw()
 		_meshShader.use();
 
 		glm::mat4 view = cam.GetViewMatrix();
-		glm::mat4 projection = glm::perspective(glm::radians(90.f), (float)_windowExtent.x / (float)_windowExtent.y, 0.1f, 100.0f);
+		glm::mat4 projection = glm::perspective(glm::radians(90.f), (float)_windowExtent.x / (float)_windowExtent.y, 0.1f, 10000.0f);
 		glm::mat4 model = glm::mat4{ 1.0f };
 
 		_meshShader.setMat4("model", model);
@@ -171,8 +150,7 @@ void Teapot::draw()
 		_meshShader.setVec2("iResolution", _windowExtent);
 		_meshShader.setFloat("iTime", glfwGetTime());
 
-		glBindVertexArray(_VAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		_model.Draw(_meshShader);
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

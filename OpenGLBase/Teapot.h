@@ -6,6 +6,7 @@
 
 #include "Shader.h"
 #include "Camera.h"
+#include "Model.h"
 
 #include "imgui.h"
 
@@ -34,7 +35,7 @@ private:
 	void _init_imgui();
 
 	Shader _meshShader;
-	GLuint _VBO {0}, _VAO {0}, _EBO {0};
+	Model _model;
 
 	GLFWwindow * _window = nullptr;
 	glm::vec2 _windowExtent;
