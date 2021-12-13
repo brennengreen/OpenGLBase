@@ -100,10 +100,12 @@ void Teapot::_init_callbacks()
 
 void Teapot::_init_pipelines()
 {
+	_skybox = Cubemap({"../Game/Skyboxes/Test/right.jpg","../Game/Skyboxes/Test/left.jpg","../Game/Skyboxes/Test/top.jpg","../Game/Skyboxes/Test/bottom.jpg","../Game/Skyboxes/Test/front.jpg","../Game/Skyboxes/Test/back.jpg"});
+
 	stbi_set_flip_vertically_on_load(true);
 
 	_meshShader = Shader("mesh.vert", "mesh.frag");
-	_model = Model((char*)"../Game/Models/Sponza/sponza.obj");
+	_model = Model((char*)"../Game/Models/Cyborg/cyborg.obj");
 
 	glEnable(GL_DEPTH_TEST);
 }
@@ -129,6 +131,8 @@ void Teapot::draw()
 			ImGui::Checkbox("Wireframe", &render_vars.wireframe);
             ImGui::ColorEdit3("clear color", (float*)&render_vars.clear_color);
 
+			ImGui::DragFloat3("light pos", (float*)&render_vars.light_pos);
+
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
             ImGui::End();
         }
@@ -138,19 +142,21 @@ void Teapot::draw()
 		glClearColor(render_vars.clear_color.x, render_vars.clear_color.y, render_vars.clear_color.z, render_vars.clear_color.w);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		_meshShader.use();
-
 		glm::mat4 view = cam.GetViewMatrix();
-		glm::mat4 projection = glm::perspective(glm::radians(90.f), (float)_windowExtent.x / (float)_windowExtent.y, 0.1f, 10000.0f);
+		glm::mat4 projection = glm::perspective(glm::radians(cam.Zoom), (float)_windowExtent.x / (float)_windowExtent.y, 0.1f, 100000.0f);
 		glm::mat4 model = glm::mat4{ 1.0f };
 
+		_meshShader.use();
+		_meshShader.setVec3("viewPos", cam.Position);
+		_meshShader.setVec3("lightPos", glm::vec3(render_vars.light_pos.x, render_vars.light_pos.y, render_vars.light_pos.z));
 		_meshShader.setMat4("model", model);
 		_meshShader.setMat4("view", view);
 		_meshShader.setMat4("projection", projection);
 		_meshShader.setVec2("iResolution", _windowExtent);
 		_meshShader.setFloat("iTime", glfwGetTime());
-
 		_model.Draw(_meshShader);
+
+		_skybox.Draw(glm::mat4(glm::mat3(cam.GetViewMatrix())), projection);
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

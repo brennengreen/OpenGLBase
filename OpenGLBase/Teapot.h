@@ -7,6 +7,7 @@
 #include "Shader.h"
 #include "Camera.h"
 #include "Model.h"
+#include "Cubemap.h"
 
 #include "imgui.h"
 
@@ -14,6 +15,7 @@
 struct TeapotImguiConfigurations {
 	ImVec4 clear_color = ImVec4(0.14f, 0.14f, 0.14f, 1.00f);
 	bool wireframe = false;
+	ImVec4 light_pos = ImVec4(1.f, 1.f, 1.f, 0.0f);
 };
 
 class Teapot {
@@ -37,6 +39,8 @@ private:
 	Shader _meshShader;
 	Model _model;
 
+	Cubemap _skybox;
+
 	GLFWwindow * _window = nullptr;
 	glm::vec2 _windowExtent;
 
@@ -54,4 +58,7 @@ private:
 	static void _glfw_error_callback(int error, const char * description) {
 		std::cerr << "GLFW Error: " << error << ": " << description << std::endl;
 	}
+
+	unsigned int _load_cubemap(std::vector<std::string> faces);
+
 };
