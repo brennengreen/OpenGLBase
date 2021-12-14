@@ -46,10 +46,6 @@ Teapot::~Teapot() {
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 
-	/*glDeleteVertexArrays(1, &_VAO);
-	glDeleteBuffers(1, &_VBO);
-	glDeleteBuffers(1, &_EBO);*/
-
 	glfwTerminate();
 }
 
@@ -105,7 +101,7 @@ void Teapot::_init_pipelines()
 	stbi_set_flip_vertically_on_load(true);
 
 	_meshShader = Shader("mesh.vert", "mesh.frag");
-	_model = Model((char*)"../Game/Models/Cyborg/cyborg.obj");
+	_model = Model((char*)"../Game/Models/Nanosuit/nanosuit.obj");
 
 	glEnable(GL_DEPTH_TEST);
 }

@@ -40,7 +40,7 @@ void main()
     vec3 specular = texture(texture_specular1, fs_in.TexCoords).rgb * spec;
 
     vec4 fragColor = vec4(ambient + diffuse + specular, 1.0);
-
-    float gamma = 2.2;
-    FragColor.rgb = pow(fragColor.rgb, vec3(1.0/gamma));
+    FragColor = fragColor;
+    //float gamma = 2.2;
+    //FragColor.rgb = pow(fragColor.rgb, vec3(1.0/gamma));
 }
