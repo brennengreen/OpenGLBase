@@ -38,21 +38,36 @@ As I learned more about computer graphics and video games a like, I desire more 
 ## Roadmap
 
 - [x] Initial engine refactor, focused on OOP-based design and best standards
-- [ ] Basic geometry support (spheres, cones, planes, cubes)
-- [ ] Geometry Importer
+- [ ] GLFW Window Abstraction
+- [ ] Renderer Abstraction
+- [ ] Logging / Testing
+- [ ] ImGui Revamp
+- [x] Cameras
+- [x] Geometry Importer
 - [ ] Scenegraph
+- [ ] Rendering API Abstraction
 - [ ] Lighting Update
+  - [ ] Materials
   - [ ] Light Casters
-  - [ ] Normal Maps
+  - [x] Normal Maps
   - [ ] HDR
   - [ ] Shadows
   - [ ] SSAO
+- [ ] Profiling
 - [ ] Physically Based Rendering
   - [ ] Materials
   - [ ] Image Based Lighting (Cubemaps)
 - [ ] Geometry Editing and Processing
+- [ ] Physics
 - [ ] Entity Component System
-- [ ] Rendering API Independence
+- [ ] Scene Saving / Loading
+- [ ] Scene Editing
+- [ ] Particle System
+  
+### Maybe Maybe Not
+- [ ] Particle System
+- [ ] Game Scripting
+- [ ] Node System
 
 <!-- CONTACT -->
 ## Contact

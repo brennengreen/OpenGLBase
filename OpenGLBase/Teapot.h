@@ -41,6 +41,11 @@ private:
 
 	Cubemap _skybox;
 
+	Shader _shadowShader;
+
+	unsigned int _depth_FBO;
+    unsigned int _depth_map;
+
 	GLFWwindow * _window = nullptr;
 	glm::vec2 _windowExtent;
 
