@@ -49,10 +49,10 @@ As I learned more about computer graphics and video games a like, I desire more 
 - [ ] Lighting Update
   - [ ] Materials
   - [ ] Light Casters
-  - [x] Normal Maps
+  - [x] Lighting Maps (Diffuse, Specular, Bump/Normal)
   - [ ] HDR
   - [ ] Shadows
-  - [ ] SSAO
+  - [ ] Advanced Lighting Maps (Roughness, AO, Metallic, Mask, etc)
 - [ ] Profiling
 - [ ] Physically Based Rendering
   - [ ] Materials
