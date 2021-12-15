@@ -38,7 +38,7 @@ As I learned more about computer graphics and video games a like, I desire more 
 ## Roadmap
 
 - [x] Initial engine refactor, focused on OOP-based design and best standards
-- [ ] GLFW Window Abstraction
+- [x] GLFW Window Abstraction
 - [ ] Renderer Abstraction
 - [ ] Logging / Testing
 - [ ] ImGui Revamp

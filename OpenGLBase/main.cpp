@@ -1,9 +1,13 @@
 #include "Teapot.h"
+#include "Application.h"
+
 
 int main( int argc, char * argv[] ) {
+	Application::Init();
+
 	Teapot tp_engine;
+	tp_engine.Draw();
 
-	tp_engine.draw();
-
+	Application::Terminate();
 	return 0;
 }

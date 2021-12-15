@@ -8,7 +8,6 @@
 #include "Camera.h"
 #include "Model.h"
 #include "Cubemap.h"
-
 #include "imgui.h"
 
 
@@ -22,17 +21,15 @@ class Teapot {
 public:
 	Teapot();
 	~Teapot();
-	void draw();
+	void Draw();
 	
-	Camera cam{};
-
-	TeapotImguiConfigurations render_vars;
+	Camera Cam{};
+	TeapotImguiConfigurations RenderVars;
 
 	void ProcessKeyboardState();
 	void ProcessScrollState();
 	void ProcessMousePosition();
 private:
-	void _init_callbacks();
 	void _init_pipelines();
 	void _init_imgui();
 
@@ -46,9 +43,6 @@ private:
 	unsigned int _depth_FBO;
     unsigned int _depth_map;
 
-	GLFWwindow * _window = nullptr;
-	glm::vec2 _windowExtent;
-
 	GLdouble _deltaTime {0};
 	GLdouble _currentFrame {0};
 	GLdouble _lastFrame {0};
@@ -56,14 +50,6 @@ private:
 	glm::vec2 _lastOffset {0, 0};
 
 private:
-	// Callbacks
-	static void _framebuffer_size_callback(GLFWwindow * window, int width, int height) {
-		glViewport(0,0,width,height);
-	}
-	static void _glfw_error_callback(int error, const char * description) {
-		std::cerr << "GLFW Error: " << error << ": " << description << std::endl;
-	}
-
 	unsigned int _load_cubemap(std::vector<std::string> faces);
 
 };
