@@ -79,7 +79,7 @@ void Teapot::_init_pipelines()
 
 	stbi_set_flip_vertically_on_load(true);
 
-	_meshShader = Shader("mesh.vert", "mesh.frag");
+	_meshShader = Shader("Shaders/mesh.vert", "Shaders/mesh.frag");
 	_model = Model((char*)"../Game/Models/Nanosuit/nanosuit.obj");
 
 	glEnable(GL_DEPTH_TEST);

@@ -71,7 +71,7 @@ public:
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
 		_load_cubemap(_cubemapFaces);
-        _shader = Shader("skybox.vert", "skybox.frag");
+        _shader = Shader("Shaders/skybox.vert", "Shaders/skybox.frag");
 
 		_shader.use();
 		_shader.setInt("skybox", 0);
