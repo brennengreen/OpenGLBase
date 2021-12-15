@@ -121,10 +121,22 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="mesh.vert">
+    <None Include="Shaders\mesh.frag">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="mesh.frag">
+    <None Include="Shaders\mesh.vert">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Shaders\shadow.frag">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Shaders\shadow.vert">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Shaders\skybox.frag">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Shaders\skybox.vert">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>

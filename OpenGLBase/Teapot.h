@@ -14,7 +14,37 @@
 struct TeapotImguiConfigurations {
 	ImVec4 clear_color = ImVec4(0.14f, 0.14f, 0.14f, 1.00f);
 	bool wireframe = false;
-	ImVec4 light_pos = ImVec4(1.f, 1.f, 1.f, 0.0f);
+
+
+	ImVec4 light_pos_1 = ImVec4(200.f, 5.f, 200.f, 0.0f);
+	ImVec4 light_pos_2 = ImVec4(-200.f, 5.f, 200.f, 0.0f);
+	ImVec4 light_pos_3 = ImVec4(200.f, 5.f, -200.f, 0.0f);
+	ImVec4 light_pos_4 = ImVec4(-200.f, 5.f, -200.f, 0.0f);
+
+	ImVec4 light_amb_1 = ImVec4(1.f, 1.f, 1.f, 0.0f);
+	ImVec4 light_amb_2 = ImVec4(1.f, 0.f, 0.f, 0.0f);
+	ImVec4 light_amb_3 = ImVec4(0.f, 1.f, 0.f, 0.0f);
+	ImVec4 light_amb_4 = ImVec4(0.f, 0.f, 1.f, 0.0f);
+
+	ImVec4 light_diff_1 = ImVec4(1.f, 1.f, 1.f, 0.0f);
+	ImVec4 light_diff_2 = ImVec4(1.f, 0.f, 0.f, 0.0f);
+	ImVec4 light_diff_3 = ImVec4(0.f, 1.f, 0.f, 0.0f);
+	ImVec4 light_diff_4 = ImVec4(0.f, 0.f, 1.f, 0.0f);
+
+	ImVec4 light_spec_1 = ImVec4(1.f, 1.f, 1.f, 0.0f);
+	ImVec4 light_spec_2 = ImVec4(1.f, 0.f, 0.f, 0.0f);
+	ImVec4 light_spec_3 = ImVec4(0.f, 1.f, 0.f, 0.0f);
+	ImVec4 light_spec_4 = ImVec4(0.f, 0.f, 1.f, 0.0f);
+
+	float light_linear_1 = 0.014;
+	float light_linear_2 = 0.014;
+	float light_linear_3 = 0.014;
+	float light_linear_4 = 0.014;
+
+	float light_quadratic_1 = 0.000007;
+	float light_quadratic_2 = 0.000007;
+	float light_quadratic_3 = 0.000007;
+	float light_quadratic_4 = 0.000007;
 };
 
 class Teapot {

@@ -13,11 +13,19 @@ out VS_OUT {
     vec3 TangentFragPos;
 } vs_out;
 
+struct DirLight {
+    vec3 direction;
+	
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+};
+
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
 
-uniform vec3 lightPos;
+uniform DirLight dirLight;
 uniform vec3 viewPos;
 
 void main()
@@ -32,7 +40,7 @@ void main()
     vec3 B = cross(N, T);
     
     mat3 TBN = transpose(mat3(T, B, N));    
-    vs_out.TangentLightPos = TBN * lightPos;
+    vs_out.TangentLightPos = TBN * dirLight.direction;
     vs_out.TangentViewPos  = TBN * viewPos;
     vs_out.TangentFragPos  = TBN * vs_out.FragPos;
         

@@ -48,7 +48,7 @@ As I learned more about computer graphics and video games a like, I desire more 
 - [ ] Rendering API Abstraction
 - [ ] Lighting Update
   - [ ] Materials
-  - [ ] Light Casters
+  - [x] Light Casters
   - [x] Lighting Maps (Diffuse, Specular, Bump/Normal)
   - [ ] HDR
   - [ ] Shadows

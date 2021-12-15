@@ -194,8 +194,12 @@
     <ClInclude Include="Teapot.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="mesh.frag" />
-    <None Include="mesh.vert" />
+    <None Include="Shaders\mesh.frag" />
+    <None Include="Shaders\mesh.vert" />
+    <None Include="Shaders\shadow.frag" />
+    <None Include="Shaders\shadow.vert" />
+    <None Include="Shaders\skybox.frag" />
+    <None Include="Shaders\skybox.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
