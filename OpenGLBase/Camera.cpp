@@ -1,5 +1,7 @@
 #include "Camera.h"
 
+#include <iostream>
+
 glm::mat4 Camera::GetViewMatrix()
 {
     return glm::lookAt(Position, Position + Front, Up);
@@ -8,14 +10,18 @@ glm::mat4 Camera::GetViewMatrix()
 void Camera::ProcessKeyboard(CameraMovement direction, float deltaTime)
 {
     float velocity = MovementSpeed * deltaTime;
-    if (direction == FORWARD)
+    if (direction == FORWARD) {
         Position += Front * velocity;
-    if (direction == BACKWARD)
+    }
+    if (direction == BACKWARD) {
         Position -= Front * velocity;
-    if (direction == LEFT)
+    }
+    if (direction == LEFT) {
         Position -= Right * velocity;
-    if (direction == RIGHT)
+    }
+    if (direction == RIGHT) {
         Position += Right * velocity;
+    }
 }
 
 void Camera::ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch)

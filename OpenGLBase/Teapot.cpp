@@ -80,7 +80,7 @@ void Teapot::_init_pipelines()
 	stbi_set_flip_vertically_on_load(true);
 
 	_meshShader = Shader("Shaders/mesh.vert", "Shaders/mesh.frag");
-	_model = Model((char*)"../Game/Models/Sponza3/sponza.obj");
+	_model = Model((char*)"../Game/Models/Sponza/sponza.obj");
 
 	glEnable(GL_DEPTH_TEST);
 }
@@ -106,6 +106,11 @@ void Teapot::Draw()
 			ImGui::Checkbox("Wireframe", &RenderVars.wireframe);
             ImGui::ColorEdit3("clear color", (float*)&RenderVars.clear_color);
 
+			ImGui::Text("Direction Light Settings");
+			ImGui::DragFloat3("Position", (float*)&RenderVars.dir_light_pos);
+			ImGui::ColorEdit3("Ambient", (float*)&RenderVars.dir_light_amb);
+			ImGui::ColorEdit3("Diffuse", (float*)&RenderVars.dir_light_diff);
+			ImGui::ColorEdit3("Specular", (float*)&RenderVars.dir_light_spec);
 			
 			ImGui::Text("Point Light 1 Settings");
 			ImGui::DragFloat3("Position 1", (float*)&RenderVars.light_pos_1);
@@ -149,11 +154,13 @@ void Teapot::Draw()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
+		RenderVars.light_pos_1 = ImVec4(1000.f*glm::cos(_currentFrame), 5.0, 0.0, 1.0);
+
 		_meshShader.use();
-		_meshShader.setVec3("dirLight.direction",  glm::vec3(-500.f, 1500.f, 56.f));
-        _meshShader.setVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
-        _meshShader.setVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
-        _meshShader.setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
+		_meshShader.setVec3("dirLight.direction",  glm::vec3(RenderVars.dir_light_pos.x, RenderVars.dir_light_pos.y, RenderVars.dir_light_pos.z));
+        _meshShader.setVec3("dirLight.ambient", glm::vec3(RenderVars.dir_light_amb.x, RenderVars.dir_light_amb.y, RenderVars.dir_light_amb.z));
+        _meshShader.setVec3("dirLight.diffuse", glm::vec3(RenderVars.dir_light_diff.x, RenderVars.dir_light_diff.y, RenderVars.dir_light_diff.z));
+        _meshShader.setVec3("dirLight.specular", glm::vec3(RenderVars.dir_light_spec.x, RenderVars.dir_light_spec.y, RenderVars.dir_light_spec.z));
         // point light 1
         _meshShader.setVec3("pointLights[0].position", glm::vec3(RenderVars.light_pos_1.x, RenderVars.light_pos_1.y, RenderVars.light_pos_1.z));
         _meshShader.setVec3("pointLights[0].ambient", glm::vec3(RenderVars.light_amb_1.x, RenderVars.light_amb_1.y, RenderVars.light_amb_1.z));
@@ -201,6 +208,7 @@ void Teapot::Draw()
 		glm::mat4 view = Cam.GetViewMatrix();
 		glm::mat4 projection = glm::perspective(glm::radians(Cam.Zoom), (float)Application::GetWindowExtent().x / (float)Application::GetWindowExtent().y, 0.1f, 100000.0f);
 		glm::mat4 model = glm::mat4{ 1.0f };
+
 
 		_meshShader.setVec3("viewPos", Cam.Position);
 		_meshShader.setMat4("model", model);

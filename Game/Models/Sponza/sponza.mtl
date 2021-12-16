@@ -12,8 +12,8 @@ newmtl leaf
 	Kd 1 1 1
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka thorns_diffuse1.png
-	map_Kd thorns_diffuse1.png
+	map_Ka sponza_thorn_diff.png
+	map_Kd sponza_thorn_diff.png
 	map_d sponza_thorn_mask.png
 	map_bump sponza_thorn_bump.png
 
@@ -28,8 +28,8 @@ newmtl vase_round
 	Kd 1 1 1
 	Ks 0.0100 0.0100 0.0100
 	Ke 0.0000 0.0000 0.0000
-	map_Ka vase_round_diffuse2.png
-	map_Kd vase_round_diffuse2.png
+	map_Ka vase_round.png
+	map_Kd vase_round.png
 	map_bump vase_round_bump.png
 
 newmtl Material__57
@@ -43,8 +43,8 @@ newmtl Material__57
 	Kd 1 1 1
 	Ks 0.000 0.000 0.000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka vase_plant_diffuse3.png
-	map_Kd vase_plant_diffuse3.png
+	map_Ka vase_plant.png
+	map_Kd vase_plant.png
 	map_d vase_plant_mask.png
 
 newmtl Material__298
@@ -58,8 +58,8 @@ newmtl Material__298
 	Kd 1 1 1
 	Ks 0.0100 0.0100 0.0100
 	Ke 0.0000 0.0000 0.0000
-	map_Ka background_diffuse4.png
-	map_Kd background_diffuse4.png
+	map_Ka background.png
+	map_Kd background.png
 	map_bump background_bump.png
 
 
