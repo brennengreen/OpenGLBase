@@ -13,6 +13,7 @@ out VS_OUT {
     vec3 TangentLightPos;
     vec3 TangentViewPos;
     vec3 TangentFragPos;
+    vec4 ShadowCoord;
 } vs_out;
 
 struct DirLight {
@@ -26,13 +27,14 @@ struct DirLight {
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
+uniform mat4 depthMVP;
 
 uniform DirLight dirLight;
 uniform vec3 viewPos;
 
 void main()
 {
-    vs_out.FragPos = vec3(model * vec4(aPos, 1.0));   
+    vs_out.FragPos =  vec3(model * vec4(aPos, 1.0));   
     vs_out.TexCoords = aTexCoords;
 
     mat3 normalMatrix = transpose(inverse(mat3(model)));
@@ -43,7 +45,8 @@ void main()
     vs_out.Normal = N;
     vec3 B = normalize(normalMatrix * aBitangent);
     
-    if (dot(cross(N, T), B) < 0.0) T *= -1.0;
+    if (dot(cross(T, N), B) < 0.0) T *= -1.0;
+
     vs_out.Tangent = T;
 
     mat3 TBN = transpose(mat3(T, B, N));    
@@ -52,4 +55,5 @@ void main()
     vs_out.TangentFragPos  = TBN * vs_out.FragPos;
         
     gl_Position = projection * view * model * vec4(aPos, 1.0);
+    vs_out.ShadowCoord = depthMVP * vec4(aPos, 1.0);
 }

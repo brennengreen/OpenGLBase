@@ -9,6 +9,7 @@ in VS_OUT {
     vec3 TangentLightPos;
     vec3 TangentViewPos;
     vec3 TangentFragPos;
+    vec4 ShadowCoord;
 } fs_in;
 
 struct DirLight {
@@ -50,6 +51,8 @@ uniform sampler2D texture_diffuse1;
 uniform sampler2D texture_specular1;
 uniform sampler2D texture_normal1;
 
+uniform sampler2D shadow_map;
+
 #define NR_POINT_LIGHTS 4
 uniform DirLight dirLight;
 uniform PointLight pointLights[NR_POINT_LIGHTS];
@@ -75,10 +78,14 @@ void main()
         result += CalcPointLight(pointLights[i], normal, fs_in.FragPos, viewDir);
     result += CalcSpotLight(spotLight, normal, fs_in.FragPos, viewDir);
 
+    float visibility = 1.0f;
+    if (texture(shadow_map, fs_in.ShadowCoord.xy).z < fs_in.ShadowCoord.z) {
+        visibility = 0.5f;
+    }
 
     float gamma = 1.0;//2.2;
-    FragColor = vec4(result, 1.0);
-    FragColor.rgb = pow(result.rgb, vec3(1.0/gamma));
+    FragColor = vec4(1.0);
+    FragColor.rgb = pow(result.rgb * visibility, vec3(1.0/gamma));
 }
 
 // calculates the color when using a directional light.

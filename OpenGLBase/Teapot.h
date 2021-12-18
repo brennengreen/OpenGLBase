@@ -49,6 +49,8 @@ struct TeapotImguiConfigurations {
 	float light_quadratic_2 = 1.0;
 	float light_quadratic_3 = 1.0;
 	float light_quadratic_4 = 1.0;
+
+	float discard_radius = 2.0;
 };
 
 class Teapot {
@@ -70,18 +72,22 @@ private:
 	Shader _meshShader;
 	Model _model;
 
-	Cubemap _skybox;
-
+	// Shadow Stuff
 	Shader _shadowShader;
+	GLuint _FBO = 0;
+	GLuint _depthTexture;
 
-	unsigned int _depth_FBO;
-    unsigned int _depth_map;
+	Cubemap _skybox;
 
 	GLdouble _deltaTime {0};
 	GLdouble _currentFrame {0};
 	GLdouble _lastFrame {0};
 
 	glm::vec2 _lastOffset {0, 0};
+
+	void ShadowPass();
+	void RenderPass();
+	void ImGuiPass();
 
 private:
 	unsigned int _load_cubemap(std::vector<std::string> faces);
