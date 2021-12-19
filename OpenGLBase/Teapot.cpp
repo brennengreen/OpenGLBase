@@ -47,30 +47,22 @@ void Teapot::_init_imgui()
 
 void Teapot::ShadowPass()
 {
-	glm::mat4 view = Cam.GetViewMatrix();
-	glm::mat4 projection = glm::perspective(glm::radians(Cam.Zoom), (float)Application::GetWindowExtent().x / (float)Application::GetWindowExtent().y, 100.0f, 100000.0f);
-	glm::mat4 model = glm::mat4{ 1.0f };
+	glm::mat4 lightProjection, lightView;
+	glm::mat4 lightSpaceMatrix;
+	float near_plane = 1.0f, far_plane = 1000.0f;
+	lightProjection = glm::ortho(-100.0f, -100.0f, -100.0f, -100.0f, near_plane, far_plane);
+	glm::vec3 dir_light_pos = glm::vec3(RenderVars.dir_light_pos.x, RenderVars.dir_light_pos.y, RenderVars.dir_light_pos.z);
+	lightView = glm::lookAt(dir_light_pos, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 1.0f));
+	lightSpaceMatrix = lightProjection * lightView;
 
-	glm::mat4 depthProj = glm::ortho<float>(-10,10,-10,10,-10,20);
-	glm::mat4 depthView = glm::lookAt(glm::vec3(RenderVars.dir_light_pos.x, RenderVars.dir_light_pos.y, RenderVars.dir_light_pos.z), glm::vec3(0,0,0), glm::vec3(0,1,0));
-	glm::mat4 depthModel = glm::mat4(1.0);
-
-	glBindFramebuffer(GL_FRAMEBUFFER, _FBO);
-	glViewport(0, 0, 1024, 1024);
-	glClear(GL_DEPTH_BUFFER_BIT);
-		
-	// Render Shadows
 	_shadowShader.use();
-	_shadowShader.setMat4("depthMVP", depthProj * depthView * depthModel);
+	_shadowShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
 
-	_meshShader.setVec3("viewPos", Cam.Position);
-	_meshShader.setMat4("model", model);
-	_meshShader.setMat4("view", view);
-	_meshShader.setMat4("projection", projection);
-	_meshShader.setVec2("iResolution", Application::GetWindowExtent());
-	_meshShader.setFloat("iTime", glfwGetTime());
-	_model.Draw(_shadowShader);
-
+	glViewport(0, 0, 1024, 1024);
+	glBindFramebuffer(GL_FRAMEBUFFER, _FBO);
+	glClear(GL_DEPTH_BUFFER_BIT);
+		glm::mat4 model = glm::scale(glm::mat4{ 1.0f }, glm::vec3(RenderVars.discard_radius, RenderVars.discard_radius, RenderVars.discard_radius));
+		_model.Draw(_shadowShader);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
@@ -79,13 +71,28 @@ void Teapot::RenderPass()
 	glViewport(0, 0, Application::GetWindowExtent().x, Application::GetWindowExtent().y);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	// Render Scene
-	RenderVars.light_pos_1 = ImVec4(1000.f*glm::cos(_currentFrame), 5.0, 0.0, 1.0);
-
-	glm::mat4 view = Cam.GetViewMatrix();
-	glm::mat4 projection = glm::perspective(glm::radians(Cam.Zoom), (float)Application::GetWindowExtent().x / (float)Application::GetWindowExtent().y, 100.0f, 100000.0f);
-	glm::mat4 model = glm::mat4{ 1.0f };
+	RenderVars.light_pos_1 = ImVec4(100.f*glm::cos(_currentFrame/2.0f), 5.0, 0.0, 1.0);
+	RenderVars.dir_light_pos = ImVec4(0.0, 700.0f, 600.0f + 400*glm::abs(cos(glfwGetTime() / 10.0f)), 0.0);
 
 	_meshShader.use();
+
+
+	glm::mat4 lightProjection, lightView;
+	glm::mat4 lightSpaceMatrix;
+	float near_plane = 1.0f, far_plane = 1000.0f;
+	lightProjection = glm::ortho(-100.0f, -100.0f, -100.0f, -100.0f, near_plane, far_plane);
+	glm::vec3 dir_light_pos = glm::vec3(RenderVars.dir_light_pos.x, RenderVars.dir_light_pos.y, RenderVars.dir_light_pos.z);
+	lightView = glm::lookAt(dir_light_pos, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 1.0f));
+	lightSpaceMatrix = lightProjection * lightView;
+	_meshShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
+
+	glm::mat4 view = Cam.GetViewMatrix();
+	glm::mat4 projection = glm::perspective(glm::radians(Cam.Zoom), (float)Application::GetWindowExtent().x / (float)Application::GetWindowExtent().y, 0.1f, 10000.0f);
+	glm::mat4 model = glm::scale(glm::mat4{ 1.0f }, glm::vec3(RenderVars.discard_radius, RenderVars.discard_radius, RenderVars.discard_radius));
+	_meshShader.setMat4("view", view);
+	_meshShader.setMat4("projection", projection);
+
+	// Direction Light
 	_meshShader.setVec3("dirLight.direction",  glm::vec3(RenderVars.dir_light_pos.x, RenderVars.dir_light_pos.y, RenderVars.dir_light_pos.z));
     _meshShader.setVec3("dirLight.ambient", glm::vec3(RenderVars.dir_light_amb.x, RenderVars.dir_light_amb.y, RenderVars.dir_light_amb.z));
     _meshShader.setVec3("dirLight.diffuse", glm::vec3(RenderVars.dir_light_diff.x, RenderVars.dir_light_diff.y, RenderVars.dir_light_diff.z));
@@ -122,25 +129,9 @@ void Teapot::RenderPass()
     _meshShader.setFloat("pointLights[3].constant", 1.0f);
     _meshShader.setFloat("pointLights[3].linear",  RenderVars.light_linear_4);
     _meshShader.setFloat("pointLights[3].quadratic", RenderVars.light_quadratic_4);
-    // spotLight
-    _meshShader.setVec3("spotLight.position", Cam.Position);
-    _meshShader.setVec3("spotLight.direction", Cam.Front);
-    _meshShader.setVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
-    _meshShader.setVec3("spotLight.diffuse", 1.0f, 1.0f, 1.0f);
-    _meshShader.setVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
-    _meshShader.setFloat("spotLight.constant", 1.0f);
-    _meshShader.setFloat("spotLight.linear", 0.045);
-    _meshShader.setFloat("spotLight.quadratic", 0.0075);
-    _meshShader.setFloat("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
-    _meshShader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(15.0f))); 
 
-	_meshShader.setFloat("discardRadius", 1.0);
 	_meshShader.setVec3("viewPos", Cam.Position);
 	_meshShader.setMat4("model", model);
-	_meshShader.setMat4("view", view);
-	_meshShader.setMat4("projection", projection);
-	_meshShader.setVec2("iResolution", Application::GetWindowExtent());
-	_meshShader.setFloat("iTime", glfwGetTime());
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, _depthTexture);
@@ -238,6 +229,8 @@ void Teapot::ProcessMousePosition()
 
 void Teapot::_init_pipelines()
 {
+	glEnable(GL_DEPTH_TEST);
+
 	_skybox = Cubemap({"../Game/Skyboxes/Test/right.jpg","../Game/Skyboxes/Test/left.jpg","../Game/Skyboxes/Test/top.jpg","../Game/Skyboxes/Test/bottom.jpg","../Game/Skyboxes/Test/front.jpg","../Game/Skyboxes/Test/back.jpg"});
 
 	stbi_set_flip_vertically_on_load(true);
@@ -248,23 +241,18 @@ void Teapot::_init_pipelines()
 	_shadowShader = Shader("Shaders/shadow.vert", "Shaders/shadow.frag");
 
 	glGenFramebuffers(1, &_FBO);
-	glBindFramebuffer(GL_FRAMEBUFFER, _FBO);
-
 	glGenTextures(1, &_depthTexture);
 	glBindTexture(GL_TEXTURE_2D, _depthTexture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, 1024, 1024, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, 1024, 1024, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
+	glBindFramebuffer(GL_FRAMEBUFFER, _FBO);
 	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, _depthTexture, 0);
-
 	glDrawBuffer(GL_NONE);
-
+	glReadBuffer(GL_NONE);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-	glEnable(GL_DEPTH_TEST);
 }
 
 void Teapot::Draw()

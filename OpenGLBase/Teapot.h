@@ -15,7 +15,7 @@ struct TeapotImguiConfigurations {
 	ImVec4 clear_color = ImVec4(0.14f, 0.14f, 0.14f, 1.00f);
 	bool wireframe = false;
 
-	ImVec4 dir_light_pos = ImVec4(500.f, 1500.f, 56.f, 0.0f);
+	ImVec4 dir_light_pos = ImVec4(5.f, 700.f, 800.f, 0.0f);
 	ImVec4 light_pos_1 = ImVec4(200.f, 5.f, 200.f, 0.0f);
 	ImVec4 light_pos_2 = ImVec4(-200.f, 5.f, 200.f, 0.0f);
 	ImVec4 light_pos_3 = ImVec4(200.f, 5.f, -200.f, 0.0f);
@@ -50,7 +50,7 @@ struct TeapotImguiConfigurations {
 	float light_quadratic_3 = 1.0;
 	float light_quadratic_4 = 1.0;
 
-	float discard_radius = 2.0;
+	float discard_radius = 0.2;
 };
 
 class Teapot {
