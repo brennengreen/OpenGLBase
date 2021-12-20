@@ -85,9 +85,9 @@ private:
 
 	glm::vec2 _lastOffset {0, 0};
 
-	void ShadowPass();
-	void RenderPass();
-	void ImGuiPass();
+	void _shadow_pass();
+	void _render_pass();
+	void _imgui_pass();
 
 private:
 	unsigned int _load_cubemap(std::vector<std::string> faces);

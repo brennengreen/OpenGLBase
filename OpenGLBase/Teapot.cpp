@@ -45,7 +45,7 @@ void Teapot::_init_imgui()
 	ImGui_ImplOpenGL3_Init("#version 330 core");
 }
 
-void Teapot::ShadowPass()
+void Teapot::_shadow_pass()
 {
 	glm::mat4 lightProjection, lightView;
 	glm::mat4 lightSpaceMatrix;
@@ -66,7 +66,7 @@ void Teapot::ShadowPass()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void Teapot::RenderPass()
+void Teapot::_render_pass()
 {
 	glViewport(0, 0, Application::GetWindowExtent().x, Application::GetWindowExtent().y);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -141,7 +141,7 @@ void Teapot::RenderPass()
 	_skybox.Draw(glm::mat4(glm::mat3(Cam.GetViewMatrix())), projection);
 }
 
-void Teapot::ImGuiPass() {
+void Teapot::_imgui_pass() {
 	ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
@@ -270,9 +270,9 @@ void Teapot::Draw()
 		glClearColor(RenderVars.clear_color.x, RenderVars.clear_color.y, RenderVars.clear_color.z, RenderVars.clear_color.w);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		ShadowPass();
-		RenderPass();
-		ImGuiPass();
+		_shadow_pass();
+		_render_pass();
+		_imgui_pass();
 
 		Application::SwapBuffers();
 		Application::PollEvents();
