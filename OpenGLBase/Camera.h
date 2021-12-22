@@ -52,6 +52,7 @@ public:
     }
 
 	glm::mat4 GetViewMatrix();
+	glm::mat4 GetProjectionMatrix();
 
 	void ProcessKeyboard(CameraMovement direction, float deltaTime);
 	void ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true);

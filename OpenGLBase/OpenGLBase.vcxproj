@@ -198,6 +198,9 @@
     <None Include="Shaders\mesh.vert" />
     <None Include="Shaders\shadow.frag" />
     <None Include="Shaders\shadow.vert" />
+    <None Include="Shaders\shadow_omni.frag" />
+    <None Include="Shaders\shadow_omni.geom" />
+    <None Include="Shaders\shadow_omni.vert" />
     <None Include="Shaders\skybox.frag" />
     <None Include="Shaders\skybox.vert" />
   </ItemGroup>

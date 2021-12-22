@@ -13,8 +13,8 @@ out VS_OUT {
     vec3 TangentLightPos;
     vec3 TangentViewPos;
     vec3 TangentFragPos;
-    vec4 ShadowCoord;
-    vec4 FragPosLightSpace;
+    //vec4 ShadowCoord;
+    //vec4 FragPosLightSpace;
 } vs_out;
 
 struct DirLight {
@@ -28,7 +28,7 @@ struct DirLight {
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
-uniform mat4 lightSpaceMatrix;
+//uniform mat4 lightSpaceMatrix;
 
 uniform DirLight dirLight;
 uniform vec3 viewPos;
@@ -56,5 +56,5 @@ void main()
     vs_out.TangentFragPos  = TBN * vs_out.FragPos;
         
     gl_Position = projection * view * model * vec4(aPos, 1.0);
-    vs_out.FragPosLightSpace  = lightSpaceMatrix * vec4(vs_out.FragPos, 1.0);
+   //vs_out.FragPosLightSpace  = lightSpaceMatrix * vec4(vs_out.FragPos, 1.0);
 }

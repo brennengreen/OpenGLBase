@@ -1,10 +1,18 @@
 #include "Camera.h"
 
+#include "Application.h"
+
 #include <iostream>
+
 
 glm::mat4 Camera::GetViewMatrix()
 {
     return glm::lookAt(Position, Position + Front, Up);
+}
+
+glm::mat4 Camera::GetProjectionMatrix()
+{
+    return glm::perspective(glm::radians(Zoom), (float)Application::GetWindowExtent().x / (float)Application::GetWindowExtent().y, 0.1f, 10000.0f);
 }
 
 void Camera::ProcessKeyboard(CameraMovement direction, float deltaTime)

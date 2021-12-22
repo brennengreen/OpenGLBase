@@ -16,10 +16,10 @@ struct TeapotImguiConfigurations {
 	bool wireframe = false;
 
 	ImVec4 dir_light_pos = ImVec4(5.f, 700.f, 800.f, 0.0f);
-	ImVec4 light_pos_1 = ImVec4(200.f, 5.f, 200.f, 0.0f);
-	ImVec4 light_pos_2 = ImVec4(-200.f, 5.f, 200.f, 0.0f);
+	ImVec4 light_pos_1 = ImVec4(0.0f, 250.f, 100.f, 0.0f);
+	/*ImVec4 light_pos_2 = ImVec4(-200.f, 5.f, 200.f, 0.0f);
 	ImVec4 light_pos_3 = ImVec4(200.f, 5.f, -200.f, 0.0f);
-	ImVec4 light_pos_4 = ImVec4(-200.f, 5.f, -200.f, 0.0f);
+	ImVec4 light_pos_4 = ImVec4(-200.f, 5.f, -200.f, 0.0f);*/
 
 
 	ImVec4 dir_light_amb = ImVec4(0.05f, 0.05f, 0.05f, 0.0f);
@@ -30,27 +30,27 @@ struct TeapotImguiConfigurations {
 
 	ImVec4 dir_light_diff = ImVec4(0.4f, 0.4f, 0.4f, 0.0f);
 	ImVec4 light_diff_1 = ImVec4(0.f, 0.f, 0.f, 0.0f);
-	ImVec4 light_diff_2 = ImVec4(0.f, 0.f, 0.f, 0.0f);
+	/*ImVec4 light_diff_2 = ImVec4(0.f, 0.f, 0.f, 0.0f);
 	ImVec4 light_diff_3 = ImVec4(0.f, 0.f, 0.f, 0.0f);
-	ImVec4 light_diff_4 = ImVec4(0.f, 0.f, 0.f, 0.0f);
+	ImVec4 light_diff_4 = ImVec4(0.f, 0.f, 0.f, 0.0f);*/
 
 	ImVec4 dir_light_spec = ImVec4(1.0f, 1.0f, 1.0f, 0.0f);
 	ImVec4 light_spec_1 = ImVec4(1.f, 1.f, 1.f, 0.0f);
-	ImVec4 light_spec_2 = ImVec4(1.f, 0.f, 0.f, 0.0f);
+	/*ImVec4 light_spec_2 = ImVec4(1.f, 0.f, 0.f, 0.0f);
 	ImVec4 light_spec_3 = ImVec4(0.f, 1.f, 0.f, 0.0f);
-	ImVec4 light_spec_4 = ImVec4(0.f, 0.f, 1.f, 0.0f);
+	ImVec4 light_spec_4 = ImVec4(0.f, 0.f, 1.f, 0.0f);*/
 
 	float light_linear_1 = 0.014;
-	float light_linear_2 = 1.0;
+	/*float light_linear_2 = 1.0;
 	float light_linear_3 = 1.0;
-	float light_linear_4 = 1.0;
+	float light_linear_4 = 1.0;*/
 
 	float light_quadratic_1 = 0.000007;
-	float light_quadratic_2 = 1.0;
+	/*float light_quadratic_2 = 1.0;
 	float light_quadratic_3 = 1.0;
-	float light_quadratic_4 = 1.0;
+	float light_quadratic_4 = 1.0;*/
 
-	float discard_radius = 0.2;
+	float model_scale = 1.0;
 };
 
 class Teapot {
@@ -75,7 +75,10 @@ private:
 	// Shadow Stuff
 	Shader _shadowShader;
 	GLuint _FBO = 0;
+	GLuint _depthCubemapFBO = 0;
 	GLuint _depthTexture;
+
+	GLuint _depthCubemap;
 
 	Cubemap _skybox;
 

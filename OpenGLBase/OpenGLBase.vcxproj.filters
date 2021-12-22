@@ -139,5 +139,14 @@
     <None Include="Shaders\skybox.vert">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="Shaders\shadow_omni.frag">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Shaders\shadow_omni.geom">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Shaders\shadow_omni.vert">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
