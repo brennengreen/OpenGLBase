@@ -13,8 +13,7 @@ out VS_OUT {
     vec3 TangentLightPos;
     vec3 TangentViewPos;
     vec3 TangentFragPos;
-    //vec4 ShadowCoord;
-    //vec4 FragPosLightSpace;
+    vec4 ShadowCoord;
 } vs_out;
 
 struct DirLight {
