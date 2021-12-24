@@ -135,7 +135,7 @@ void Teapot::_render_pass()
 	_meshShader.setMat4("model", model);
 	_meshShader.setFloat("far_plane", 2500.0f);
 
-	glActiveTexture(GL_TEXTURE0);
+	glActiveTexture(GL_TEXTURE3);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, _depthCubemap);
 
 	_model.Draw(_meshShader);
@@ -275,6 +275,9 @@ void Teapot::_init_pipelines()
     glDrawBuffer(GL_NONE);
     glReadBuffer(GL_NONE);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	_meshShader.use();
+	_meshShader.setInt("shadow_map", 3);
 }
 
 void Teapot::Draw()

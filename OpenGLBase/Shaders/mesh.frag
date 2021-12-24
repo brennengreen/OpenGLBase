@@ -76,21 +76,21 @@ void main()
     vec3 viewDir = normalize(fs_in.TangentViewPos - fs_in.TangentFragPos);
     
     vec3 result = CalcDirLight(dirLight, normal, viewDir);
-
+    //vec3 result = vec3(0.0);
     for (int i = 0; i < NR_POINT_LIGHTS; i++)
         result += CalcPointLight(pointLights[i], normal, fs_in.FragPos, viewDir);
     //result += CalcSpotLight(spotLight, normal, fs_in.FragPos, viewDir);
 
-    float gamma = 1.0;//2.2;
+    float gamma = 2.2;//2.2;
     //FragColor = vec4(fs_in.Tangent, 1.0);
     //FragColor = vec4(texture(texture_diffuse1, fs_in.TexCoords).rgb, 1.0f);
     //FragColor = vec4(normalize(dirLight.direction), 1.0f);
     //FragColor = vec4(CalcDirLight(dirLight, normal, viewDir), 1.0f);
     //FragColor = vec4(CalcPointLight(pointLights[0], normal, fs_in.FragPos, viewDir), 1.0f);
     //FragColor = vec4(vec3((texture(shadow_map, fs_in.FragPos - pointLights[0].position).r) / far_plane), 1.0);
-    //FragColor = vec4(result, 1.0);
+    FragColor = vec4(result, 1.0);
     //FragColor = vec4((1.0f - ShadowCalculation(fs_in.FragPos)), 0.0f, (1.0f - ShadowCalculation(fs_in.FragPos)), 1.0f);
-    //FragColor.rgb = pow(result, vec3(1.0/gamma));
+    FragColor.rgb = pow(result, vec3(1.0/gamma));
 }
 
 vec3 gridSamplingDisk[20] = vec3[]
@@ -107,8 +107,8 @@ float ShadowCalculation(vec3 fragPos)
     vec3 fragToLight = fragPos - pointLights[0].position;
     float currentDepth = length(fragToLight);
     float shadow = 0.0;
-    float bias = 50.0;
-    int samples = 20;
+    float bias = 250.0;
+    int samples = 750;
     float viewDistance = length(viewPos - fragPos);
     float diskRadius = (1.0 + (viewDistance / far_plane)) / 25.0;
     for(int i = 0; i < samples; ++i)
@@ -120,6 +120,7 @@ float ShadowCalculation(vec3 fragPos)
             shadow += 1.0;
     }
     shadow /= float(samples);
+    //FragColor = vec4(vec3(shadow), 1.0);
     return shadow;
 //    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
 //    projCoords = projCoords * 0.5 + 0.5;

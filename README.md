@@ -51,7 +51,7 @@ As I learned more about computer graphics and video games a like, I desire more 
   - [x] Light Casters
   - [x] Lighting Maps (Diffuse, Specular, Bump/Normal)
   - [ ] HDR
-  - [ ] Shadows
+  - [x] Shadows
   - [ ] Advanced Lighting Maps (Roughness, AO, Metallic, Mask, etc)
 - [ ] Profiling
 - [ ] Physically Based Rendering
