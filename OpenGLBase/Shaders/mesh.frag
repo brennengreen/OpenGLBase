@@ -75,21 +75,15 @@ void main()
     normal = normalize(normal * 2.0 - 1.0);  // this normal is in tangent space
     vec3 viewDir = normalize(fs_in.TangentViewPos - fs_in.TangentFragPos);
     
-    vec3 result = CalcDirLight(dirLight, normal, viewDir);
-    //vec3 result = vec3(0.0);
+    //vec3 result = CalcDirLight(dirLight, normal, viewDir);
+    vec3 result = vec3(0.0);
     for (int i = 0; i < NR_POINT_LIGHTS; i++)
         result += CalcPointLight(pointLights[i], normal, fs_in.FragPos, viewDir);
     //result += CalcSpotLight(spotLight, normal, fs_in.FragPos, viewDir);
 
     float gamma = 2.2;//2.2;
-    //FragColor = vec4(fs_in.Tangent, 1.0);
-    //FragColor = vec4(texture(texture_diffuse1, fs_in.TexCoords).rgb, 1.0f);
-    //FragColor = vec4(normalize(dirLight.direction), 1.0f);
-    //FragColor = vec4(CalcDirLight(dirLight, normal, viewDir), 1.0f);
-    //FragColor = vec4(CalcPointLight(pointLights[0], normal, fs_in.FragPos, viewDir), 1.0f);
-    //FragColor = vec4(vec3((texture(shadow_map, fs_in.FragPos - pointLights[0].position).r) / far_plane), 1.0);
     FragColor = vec4(result, 1.0);
-    //FragColor = vec4((1.0f - ShadowCalculation(fs_in.FragPos)), 0.0f, (1.0f - ShadowCalculation(fs_in.FragPos)), 1.0f);
+    //FragColor = vec4(texture(texture_specular1, fs_in.TexCoords).rgb, 1.0);
     FragColor.rgb = pow(result, vec3(1.0/gamma));
 }
 
@@ -115,35 +109,13 @@ float ShadowCalculation(vec3 fragPos)
     {
         float closestDepth = texture(shadow_map, fragToLight + gridSamplingDisk[i] * diskRadius).r;
         closestDepth *= far_plane;   // undo mapping [0;1]
-        FragColor = vec4(vec3(closestDepth / far_plane), 1.0f);
+        //FragColor = vec4(vec3(closestDepth / far_plane), 1.0f);
         if(currentDepth - bias > closestDepth)
             shadow += 1.0;
     }
     shadow /= float(samples);
     //FragColor = vec4(vec3(shadow), 1.0);
     return shadow;
-//    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
-//    projCoords = projCoords * 0.5 + 0.5;
-//    float closestDepth = texture(shadow_map, projCoords.xy).r; 
-//    float currentDepth = projCoords.z;
-//    vec3 lightDir = normalize(dirLight.direction);
-//    float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005);
-//    float shadow = 0.0;
-//    vec2 texelSize = 1.0 / textureSize(shadow_map, 0);
-//    for(int x = -1; x <= 1; ++x)
-//    {
-//        for(int y = -1; y <= 1; ++y)
-//        {
-//            float pcfDepth = texture(shadow_map, projCoords.xy + vec2(x, y) * texelSize).r; 
-//            shadow += currentDepth - bias > pcfDepth  ? 1.0 : 0.0;        
-//        }    
-//    }
-//    shadow /= 9.0;
-//    
-//    if(projCoords.z > 1.0)
-//        shadow = 0.0;
-//        
-//    return shadow;
 }
 
 // calculates the color when using a directional light.
@@ -235,3 +207,28 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     this_specular *= attenuation * intensity;
     return (this_ambient + this_diffuse + this_specular);
 }
+
+//float DirShadowCalculation() {
+    //    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    //    projCoords = projCoords * 0.5 + 0.5;
+    //    float closestDepth = texture(shadow_map, projCoords.xy).r; 
+    //    float currentDepth = projCoords.z;
+    //    vec3 lightDir = normalize(dirLight.direction);
+    //    float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005);
+    //    float shadow = 0.0;
+    //    vec2 texelSize = 1.0 / textureSize(shadow_map, 0);
+    //    for(int x = -1; x <= 1; ++x)
+    //    {
+    //        for(int y = -1; y <= 1; ++y)
+    //        {
+    //            float pcfDepth = texture(shadow_map, projCoords.xy + vec2(x, y) * texelSize).r; 
+    //            shadow += currentDepth - bias > pcfDepth  ? 1.0 : 0.0;        
+    //        }    
+    //    }
+    //    shadow /= 9.0;
+    //    
+    //    if(projCoords.z > 1.0)
+    //        shadow = 0.0;
+    //        
+    //    return shadow;
+//}
