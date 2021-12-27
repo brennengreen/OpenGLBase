@@ -44,14 +44,21 @@ public:
     vector<Texture>      textures;
     unsigned int VAO;
 
+    bool has_diff, has_spec, has_normal, has_height;
+
     // constructor
     Mesh() = default;
     ~Mesh() = default;
-    Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures)
+    Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures, bool _has_diff, bool _has_spec, bool _has_normal, bool _has_height)
     {
         this->vertices = vertices;
         this->indices = indices;
         this->textures = textures;
+
+        this->has_diff = _has_diff;
+        this->has_spec = _has_spec;
+        this->has_normal = _has_normal;
+        this->has_height = _has_height;
 
         // now that we have all the required data, set the vertex buffers and its attribute pointers.
         _setup_mesh();
@@ -86,6 +93,11 @@ public:
             glBindTexture(GL_TEXTURE_2D, textures[i].id);
         }
         
+        shader.setBool("has_diff", has_diff);
+        shader.setBool("has_spec", has_spec);
+        shader.setBool("has_normal", has_normal);
+        shader.setBool("has_height", has_height);
+
         // draw mesh
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);

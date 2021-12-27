@@ -86,8 +86,13 @@ void Teapot::_shadow_pass()
     _shadowShader.setVec3("lightPos", lightPos);
 	glm::mat4 model = glm::scale(glm::mat4{ 1.0f }, glm::vec3(RenderVars.model_scale, RenderVars.model_scale, RenderVars.model_scale));
 	_shadowShader.setMat4("model", model);
-	for (auto &_m : mScene.mModels)
-		_m->Draw(_shadowShader);
+	mScene.mModels[0]->Draw(_shadowShader);
+
+	model = glm::scale(glm::mat4{ 1.0f }, glm::vec3(250, 1, 250));
+	model = glm::translate(model, glm::vec3(0, 5, 0));
+	_shadowShader.setMat4("model", model);
+	mScene.mModels[1]->Draw(_shadowShader);
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 }
@@ -139,8 +144,12 @@ void Teapot::_render_pass()
 	glActiveTexture(GL_TEXTURE3);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, _depthCubemap);
 
-	for (auto &_m : mScene.mModels)
-		_m->Draw(_meshShader);
+	mScene.mModels[0]->Draw(_meshShader);
+
+	model = glm::scale(glm::mat4{ 1.0f }, glm::vec3(250, 1, 250));
+	model = glm::translate(model, glm::vec3(0, 5, 0));
+	_meshShader.setMat4("model", model);
+	mScene.mModels[1]->Draw(_meshShader);
 
 	for (auto &_s : mScene.mSkyboxes)
 		_s->Draw(glm::mat4(glm::mat3(Cam.GetViewMatrix())), projection);
@@ -250,7 +259,11 @@ void Teapot::_init_pipelines()
 	stbi_set_flip_vertically_on_load(true);
 
 	mScene.mModels.push_back(
-		std::make_shared<Model>((char*)"../Game/Models/Cyborg/cyborg.obj")
+		std::make_shared<Model>((char*)"../Game/Models/Sponza/sponza.obj")
+	);
+
+	mScene.mModels.push_back(
+		std::make_shared<Model>((char*)"../Game/Models/Cube/cube.obj")
 	);
 
 	mScene.mDirLights.push_back(
@@ -266,7 +279,6 @@ void Teapot::_init_pipelines()
 	);
 
 	_meshShader = Shader("Shaders/mesh.vert", "Shaders/mesh.frag");
-
 	_shadowShader = Shader("Shaders/shadow_omni.vert", "Shaders/shadow_omni.frag", "Shaders/shadow_omni.geom");
 
 	/*glGenFramebuffers(1, &_FBO);
