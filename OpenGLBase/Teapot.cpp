@@ -247,6 +247,8 @@ void Teapot::_init_pipelines()
 	);
 	mScene.mSkyboxes.push_back(skybox);
 	
+	stbi_set_flip_vertically_on_load(true);
+
 	mScene.mModels.push_back(
 		std::make_shared<Model>((char*)"../Game/Models/Cyborg/cyborg.obj")
 	);
@@ -262,8 +264,6 @@ void Teapot::_init_pipelines()
 	mScene.mSpotLights.push_back(
 		std::make_shared<SpotLight>()
 	);
-
-	stbi_set_flip_vertically_on_load(true);
 
 	_meshShader = Shader("Shaders/mesh.vert", "Shaders/mesh.frag");
 

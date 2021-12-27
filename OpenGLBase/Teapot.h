@@ -76,6 +76,7 @@ private:
 
 	Shader _meshShader;
 
+	Model _model;
 	// Shadow Stuff
 	Shader _shadowShader;
 	GLuint _FBO = 0;
