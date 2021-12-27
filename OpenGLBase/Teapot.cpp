@@ -86,7 +86,8 @@ void Teapot::_shadow_pass()
     _shadowShader.setVec3("lightPos", lightPos);
 	glm::mat4 model = glm::scale(glm::mat4{ 1.0f }, glm::vec3(RenderVars.model_scale, RenderVars.model_scale, RenderVars.model_scale));
 	_shadowShader.setMat4("model", model);
-	_model.Draw(_shadowShader);
+	for (auto &_m : mScene.mModels)
+		_m->Draw(_shadowShader);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 }
@@ -138,9 +139,11 @@ void Teapot::_render_pass()
 	glActiveTexture(GL_TEXTURE3);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, _depthCubemap);
 
-	_model.Draw(_meshShader);
+	for (auto &_m : mScene.mModels)
+		_m->Draw(_meshShader);
 
-	_skybox.Draw(glm::mat4(glm::mat3(Cam.GetViewMatrix())), projection);
+	for (auto &_s : mScene.mSkyboxes)
+		_s->Draw(glm::mat4(glm::mat3(Cam.GetViewMatrix())), projection);
 }
 
 void Teapot::_imgui_pass() {
@@ -234,12 +237,35 @@ void Teapot::_init_pipelines()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 
-	_skybox = Cubemap({"../Game/Skyboxes/Test/right.jpg","../Game/Skyboxes/Test/left.jpg","../Game/Skyboxes/Test/top.jpg","../Game/Skyboxes/Test/bottom.jpg","../Game/Skyboxes/Test/front.jpg","../Game/Skyboxes/Test/back.jpg"});
+	auto skybox = std::make_shared<Cubemap>(
+		(char*)"../Game/Skyboxes/Test/right.jpg",
+		(char*)"../Game/Skyboxes/Test/left.jpg",
+		(char*)"../Game/Skyboxes/Test/top.jpg",
+		(char*)"../Game/Skyboxes/Test/bottom.jpg",
+		(char*)"../Game/Skyboxes/Test/front.jpg",
+		(char*)"../Game/Skyboxes/Test/back.jpg"
+	);
+	mScene.mSkyboxes.push_back(skybox);
+	
+	mScene.mModels.push_back(
+		std::make_shared<Model>((char*)"../Game/Models/Cyborg/cyborg.obj")
+	);
+
+	mScene.mDirLights.push_back(
+		std::make_shared<DirectionalLight>()
+	);
+
+	mScene.mPointLights.push_back(
+		std::make_shared<PointLight>()
+	);
+	
+	mScene.mSpotLights.push_back(
+		std::make_shared<SpotLight>()
+	);
 
 	stbi_set_flip_vertically_on_load(true);
 
 	_meshShader = Shader("Shaders/mesh.vert", "Shaders/mesh.frag");
-	_model = Model((char*)"../Game/Models/Sponza/sponza.obj");
 
 	_shadowShader = Shader("Shaders/shadow_omni.vert", "Shaders/shadow_omni.frag", "Shaders/shadow_omni.geom");
 

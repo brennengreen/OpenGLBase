@@ -4,11 +4,15 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
+#include "Lights.h"
 #include "Shader.h"
+#include "Scene.h"
 #include "Camera.h"
 #include "Model.h"
 #include "Cubemap.h"
 #include "imgui.h"
+
+#include <memory>
 
 
 struct TeapotImguiConfigurations {
@@ -60,6 +64,7 @@ public:
 	void Draw();
 	
 	Camera Cam{};
+	Scene mScene;
 	TeapotImguiConfigurations RenderVars;
 
 	void ProcessKeyboardState();
@@ -70,7 +75,6 @@ private:
 	void _init_imgui();
 
 	Shader _meshShader;
-	Model _model;
 
 	// Shadow Stuff
 	Shader _shadowShader;
@@ -79,8 +83,6 @@ private:
 	GLuint _depthTexture;
 
 	GLuint _depthCubemap;
-
-	Cubemap _skybox;
 
 	GLdouble _deltaTime {0};
 	GLdouble _currentFrame {0};

@@ -15,7 +15,7 @@ class Cubemap
 {
 public:
 	Cubemap() = default;
-	explicit Cubemap(std::vector<std::string> _cubemapFaces) {
+	Cubemap(std::vector<std::string> _cubemapFaces) {
 		float cubemapVertices[36*3] = {
 		// positions        
 		-1.0f,  1.0f, -1.0f,
@@ -71,6 +71,68 @@ public:
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
 		_load_cubemap(_cubemapFaces);
+        _shader = Shader("Shaders/skybox.vert", "Shaders/skybox.frag");
+
+		_shader.use();
+		_shader.setInt("skybox", 0);
+	}
+
+	Cubemap(std::string f1, std::string f2, std::string f3, std::string f4, std::string f5, std::string f6) {
+		float cubemapVertices[36*3] = {
+		// positions        
+		-1.0f,  1.0f, -1.0f,
+		-1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		
+		-1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+		
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		
+		-1.0f, -1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+		
+		-1.0f,  1.0f, -1.0f,
+		 1.0f,  1.0f, -1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f, -1.0f,
+		
+		-1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		 1.0f, -1.0f,  1.0f
+		};
+
+
+        glGenVertexArrays(1, &_VAO);
+        glGenBuffers(1, &_VBO);
+		glBindVertexArray(_VAO);
+		glBindBuffer(GL_ARRAY_BUFFER, _VBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(cubemapVertices), &cubemapVertices, GL_STATIC_DRAW);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
+		_load_cubemap({f1,f2,f3,f4,f5,f6});
         _shader = Shader("Shaders/skybox.vert", "Shaders/skybox.frag");
 
 		_shader.use();
