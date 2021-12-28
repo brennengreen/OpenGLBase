@@ -199,6 +199,8 @@
   <ItemGroup>
     <None Include="Shaders\mesh.frag" />
     <None Include="Shaders\mesh.vert" />
+    <None Include="Shaders\pbr.frag" />
+    <None Include="Shaders\pbr.vert" />
     <None Include="Shaders\shadow.frag" />
     <None Include="Shaders\shadow.vert" />
     <None Include="Shaders\shadow_omni.frag" />

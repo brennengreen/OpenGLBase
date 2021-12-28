@@ -88,11 +88,6 @@ void Teapot::_shadow_pass()
 	_shadowShader.setMat4("model", model);
 	mScene.mModels[0]->Draw(_shadowShader);
 
-	model = glm::scale(glm::mat4{ 1.0f }, glm::vec3(250, 1, 250));
-	model = glm::translate(model, glm::vec3(0, 5, 0));
-	_shadowShader.setMat4("model", model);
-	mScene.mModels[1]->Draw(_shadowShader);
-
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 }
@@ -139,17 +134,12 @@ void Teapot::_render_pass()
 
 	_meshShader.setVec3("viewPos", Cam.Position);
 	_meshShader.setMat4("model", model);
-	_meshShader.setFloat("far_plane", 2500.0f);
+	//_meshShader.setFloat("far_plane", 2500.0f);
 
-	glActiveTexture(GL_TEXTURE3);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, _depthCubemap);
+	/*glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, _depthCubemap);*/
 
 	mScene.mModels[0]->Draw(_meshShader);
-
-	model = glm::scale(glm::mat4{ 1.0f }, glm::vec3(250, 1, 250));
-	model = glm::translate(model, glm::vec3(0, 5, 0));
-	_meshShader.setMat4("model", model);
-	mScene.mModels[1]->Draw(_meshShader);
 
 	for (auto &_s : mScene.mSkyboxes)
 		_s->Draw(glm::mat4(glm::mat3(Cam.GetViewMatrix())), projection);
@@ -180,30 +170,6 @@ void Teapot::_imgui_pass() {
 		ImGui::ColorEdit3("Specular 1", (float*)&RenderVars.light_spec_1);
 		ImGui::InputFloat("Linear 1", (float*)&RenderVars.light_linear_1);
 		ImGui::InputFloat("Quadratic 1", (float*)&RenderVars.light_quadratic_1);
-			
-		/*ImGui::Text("Point Light 2 Settings");
-		ImGui::DragFloat3("Position 2", (float*)&RenderVars.light_pos_2);
-		ImGui::ColorEdit3("Ambient 2", (float*)&RenderVars.light_amb_2);
-		ImGui::ColorEdit3("Diffuse 2", (float*)&RenderVars.light_diff_2);
-		ImGui::ColorEdit3("Specular 2", (float*)&RenderVars.light_spec_2);
-		ImGui::InputFloat("Linear 2", (float*)&RenderVars.light_linear_2);
-		ImGui::InputFloat("Quadratic 2", (float*)&RenderVars.light_quadratic_2);
-
-		ImGui::Text("Point Light 3 Settings");
-		ImGui::DragFloat3("Position 3", (float*)&RenderVars.light_pos_3);
-		ImGui::ColorEdit3("Ambient 3", (float*)&RenderVars.light_amb_3);
-		ImGui::ColorEdit3("Diffuse 3", (float*)&RenderVars.light_diff_3);
-		ImGui::ColorEdit3("Specular 3", (float*)&RenderVars.light_spec_3);
-		ImGui::InputFloat("Linear 3", (float*)&RenderVars.light_linear_3);
-		ImGui::InputFloat("Quadratic 3", (float*)&RenderVars.light_quadratic_3);
-
-		ImGui::Text("Point Light 4 Settings");
-		ImGui::DragFloat3("Position 4", (float*)&RenderVars.light_pos_4);
-		ImGui::ColorEdit3("Ambient 4", (float*)&RenderVars.light_amb_4);
-		ImGui::ColorEdit3("Diffuse 4", (float*)&RenderVars.light_diff_4);
-		ImGui::ColorEdit3("Specular 4", (float*)&RenderVars.light_spec_4);
-		ImGui::InputFloat("Linear 4", (float*)&RenderVars.light_linear_4);
-		ImGui::InputFloat("Quadratic 4", (float*)&RenderVars.light_quadratic_4);*/
 
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
         ImGui::End();
@@ -262,10 +228,6 @@ void Teapot::_init_pipelines()
 		std::make_shared<Model>((char*)"../Game/Models/Sponza/sponza.obj")
 	);
 
-	mScene.mModels.push_back(
-		std::make_shared<Model>((char*)"../Game/Models/Cube/cube.obj")
-	);
-
 	mScene.mDirLights.push_back(
 		std::make_shared<DirectionalLight>()
 	);
@@ -278,8 +240,8 @@ void Teapot::_init_pipelines()
 		std::make_shared<SpotLight>()
 	);
 
-	_meshShader = Shader("Shaders/mesh.vert", "Shaders/mesh.frag");
-	_shadowShader = Shader("Shaders/shadow_omni.vert", "Shaders/shadow_omni.frag", "Shaders/shadow_omni.geom");
+	_meshShader = Shader("Shaders/pbr.vert", "Shaders/pbr.frag");
+	//_shadowShader = Shader("Shaders/shadow_omni.vert", "Shaders/shadow_omni.frag", "Shaders/shadow_omni.geom");
 
 	/*glGenFramebuffers(1, &_FBO);
 	glGenTextures(1, &_depthTexture);
@@ -295,27 +257,27 @@ void Teapot::_init_pipelines()
 	glReadBuffer(GL_NONE);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);*/
 	
-	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
-    glGenFramebuffers(1, &_depthCubemapFBO);
-    // create depth cubemap texture
-    glGenTextures(1, &_depthCubemap);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, _depthCubemap);
-    for (unsigned int i = 0; i < 6; ++i)
-        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-    // attach depth texture as FBO's depth buffer
-    glBindFramebuffer(GL_FRAMEBUFFER, _depthCubemapFBO);
-    glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, _depthCubemap, 0);
-    glDrawBuffer(GL_NONE);
-    glReadBuffer(GL_NONE);
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	//const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+ //   glGenFramebuffers(1, &_depthCubemapFBO);
+ //   // create depth cubemap texture
+ //   glGenTextures(1, &_depthCubemap);
+ //   glBindTexture(GL_TEXTURE_CUBE_MAP, _depthCubemap);
+ //   for (unsigned int i = 0; i < 6; ++i)
+ //       glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+ //   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+ //   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+ //   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+ //   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+ //   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+ //   // attach depth texture as FBO's depth buffer
+ //   glBindFramebuffer(GL_FRAMEBUFFER, _depthCubemapFBO);
+ //   glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, _depthCubemap, 0);
+ //   glDrawBuffer(GL_NONE);
+ //   glReadBuffer(GL_NONE);
+ //   glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	_meshShader.use();
-	_meshShader.setInt("shadow_map", 3);
+	/*_meshShader.use();
+	_meshShader.setInt("shadow_map", 3);*/
 }
 
 void Teapot::Draw()
@@ -333,7 +295,7 @@ void Teapot::Draw()
 		glClearColor(RenderVars.clear_color.x, RenderVars.clear_color.y, RenderVars.clear_color.z, RenderVars.clear_color.w);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		_shadow_pass();
+		//_shadow_pass();
 		_render_pass();
 		_imgui_pass();
 

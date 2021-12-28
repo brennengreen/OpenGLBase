@@ -157,5 +157,11 @@
     <None Include="Shaders\shadow_omni.vert">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="Shaders\pbr.frag">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Shaders\pbr.vert">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
