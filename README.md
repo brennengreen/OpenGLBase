@@ -50,23 +50,29 @@ As I learned more about computer graphics and video games a like, I desire more 
   - [ ] Materials
   - [x] Light Casters
   - [x] Lighting Maps (Diffuse, Specular, Bump/Normal)
-  - [ ] HDR
   - [x] Shadows
-  - [ ] Advanced Lighting Maps (Roughness, AO, Metallic, Mask, etc)
+  - [ ] SSAO
+  - [ ] HDR
 - [ ] Profiling
-- [ ] Physically Based Rendering
-  - [ ] Materials
-  - [ ] Image Based Lighting (Cubemaps)
 - [ ] Geometry Editing and Processing
+- [ ] Advanced Lighting
+  - [ ] Physically Based Rendering
+    - [ ] Advanced Lighting Maps (Roughness, AO, Metallic, Mask, etc)
+    - [ ] Materials
+    - [ ] Image Based Lighting (Cubemaps)
+  - [ ] Sceenspace Reflections
+  - [ ] Tonemapping
+  - [ ] Optional Global Illumination (Voxel Cone Tracing)
 - [ ] Physics
 - [ ] Entity Component System
 - [ ] Scene Saving / Loading
-- [ ] Scene Editing
+- [ ] Scene Editing (Picking)
 - [ ] Particle System
+- [ ] Skeletal Animation
   
 ### Maybe Maybe Not
 - [ ] Particle System
-- [ ] Game Scripting
+- [ ] Game Scripting (LUA)
 - [ ] Node System
 
 <!-- CONTACT -->
