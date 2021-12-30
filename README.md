@@ -57,8 +57,8 @@ As I learned more about computer graphics and video games a like, I desire more 
 - [ ] Geometry Editing and Processing
 - [ ] Advanced Lighting
   - [ ] Physically Based Rendering
+    - [x] Materials
     - [ ] Advanced Lighting Maps (Roughness, AO, Metallic, Mask, etc)
-    - [ ] Materials
     - [ ] Image Based Lighting (Cubemaps)
   - [ ] Sceenspace Reflections
   - [ ] Tonemapping

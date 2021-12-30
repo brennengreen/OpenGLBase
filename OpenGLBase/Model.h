@@ -189,33 +189,51 @@ private:
         // specular: texture_specularN
         // normal: texture_normalN
 
-        bool has_diff = false, has_spec = false, has_normal  = false, has_height = false;
+        //bool has_diff = false, has_spec = false, has_normal  = false, has_height = false;
 
-        // 1. diffuse maps
-        vector<Texture> diffuseMaps = _load_material_textures(material, aiTextureType_DIFFUSE, "texture_diffuse");
-        if (diffuseMaps.size() > 0) has_diff = true;
-        textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-        // 2. specular maps
-        vector<Texture> specularMaps = _load_material_textures(material, aiTextureType_SPECULAR, "texture_specular");
-        if (specularMaps.size() > 0) has_spec = true;
-        textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-        // 3. normal maps
-        std::vector<Texture> normalMaps = _load_material_textures(material, aiTextureType_HEIGHT, "texture_normal");
-        if (normalMaps.size() > 0) has_normal = true;
-        textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
-        // 4. height maps
-        std::vector<Texture> heightMaps = _load_material_textures(material, aiTextureType_AMBIENT, "texture_height");
-        if (heightMaps.size() > 0) has_height = true;
-        textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
+        //// 1. diffuse maps
+        //vector<Texture> diffuseMaps = _load_material_textures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+        //if (diffuseMaps.size() > 0) has_diff = true;
+        //textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+        //// 2. specular maps
+        //vector<Texture> specularMaps = _load_material_textures(material, aiTextureType_SPECULAR, "texture_specular");
+        //if (specularMaps.size() > 0) has_spec = true;
+        //textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+        //// 3. normal maps
+        //std::vector<Texture> normalMaps = _load_material_textures(material, aiTextureType_HEIGHT, "texture_normal");
+        //if (normalMaps.size() > 0) has_normal = true;
+        //textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
+        //// 4. height maps
+        //std::vector<Texture> heightMaps = _load_material_textures(material, aiTextureType_AMBIENT, "texture_height");
+        //if (heightMaps.size() > 0) has_height = true;
+        //textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
+
         
+        vector<Texture> albedoMaps = _load_material_textures(material, aiTextureType_DIFFUSE, "texture_albedo");
+        textures.insert(textures.end(), albedoMaps.begin(), albedoMaps.end());
+       
+        vector<Texture> normalMaps = _load_material_textures(material, aiTextureType_HEIGHT, "texture_normal");
+        textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
+        
+        std::vector<Texture> metalMaps = _load_material_textures(material, aiTextureType_SHININESS, "texture_metallic");
+        textures.insert(textures.end(), metalMaps.begin(), metalMaps.end());
+
+        std::vector<Texture> roughMaps = _load_material_textures(material, aiTextureType_SPECULAR, "texture_roughness");
+        textures.insert(textures.end(), roughMaps.begin(), roughMaps.end());
+
+        std::vector<Texture> aoMaps = _load_material_textures(material, aiTextureType_AMBIENT, "texture_ao");
+        textures.insert(textures.end(), aoMaps.begin(), aoMaps.end());
+
         // return a mesh object created from the extracted mesh data
-        return Mesh(vertices, indices, textures, has_diff, has_spec, has_normal, has_height);
+        //return Mesh(vertices, indices, textures, has_diff, has_spec, has_normal, has_height);
+        return Mesh(vertices, indices, textures);
     }
 
     // checks all material textures of a given type and loads the textures if they're not loaded yet.
     // the required info is returned as a Texture struct.
     vector<Texture> _load_material_textures(aiMaterial *mat, aiTextureType type, string typeName)
     {
+        cout << typeName << " " << mat->GetTextureCount(type) << endl;
         vector<Texture> textures;
         for(unsigned int i = 0; i < mat->GetTextureCount(type); i++)
         {
