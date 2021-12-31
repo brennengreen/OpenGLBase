@@ -31,6 +31,7 @@ As I learned more about computer graphics and video games a like, I desire more 
 * [Dear Imgui](https://github.com/ocornut/imgui)
 * [ASSIMP](https://www.assimp.org/)
 * [C++](https://www.cplusplus.com/)
+* [GLFW]
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -47,7 +48,7 @@ As I learned more about computer graphics and video games a like, I desire more 
 - [ ] Scenegraph
 - [ ] Rendering API Abstraction
 - [ ] Lighting Update
-  - [ ] Materials
+  - [x] Materials
   - [x] Light Casters
   - [x] Lighting Maps (Diffuse, Specular, Bump/Normal)
   - [x] Shadows
@@ -58,7 +59,7 @@ As I learned more about computer graphics and video games a like, I desire more 
 - [ ] Advanced Lighting
   - [ ] Physically Based Rendering
     - [x] Materials
-    - [ ] Advanced Lighting Maps (Roughness, AO, Metallic, Mask, etc)
+    - [x] Advanced Lighting Maps (Roughness, AO, Metallic, Mask, etc)
     - [ ] Image Based Lighting (Cubemaps)
   - [ ] Sceenspace Reflections
   - [ ] Tonemapping
@@ -67,7 +68,6 @@ As I learned more about computer graphics and video games a like, I desire more 
 - [ ] Entity Component System
 - [ ] Scene Saving / Loading
 - [ ] Scene Editing (Picking)
-- [ ] Particle System
 - [ ] Skeletal Animation
   
 ### Maybe Maybe Not
@@ -75,9 +75,16 @@ As I learned more about computer graphics and video games a like, I desire more 
 - [ ] Game Scripting (LUA)
 - [ ] Node System
 
+
+## Examples
+
+<img style="width:350px;" src="./Media/hydrant.jpg"></img>
+<img style="width:350px;" src="./Media/pbr.gif"></img>
+<img style="width:350px;" src="./Media/sponza-tp.gif"></img>
+
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@TheBrennenGreen](https://twitter.com/your_username) - brennengreen@outlook.com
+Brennen Green - [@TheBrennenGreen](https://twitter.com/your_username) - brennengreen@outlook.com
 
 <p align="right">(<a href="#top">back to top</a>)</p>
