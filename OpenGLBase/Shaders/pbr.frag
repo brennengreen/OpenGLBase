@@ -97,6 +97,8 @@ uniform sampler2D texture_metallic1;
 uniform sampler2D texture_roughness1;
 uniform sampler2D texture_ao1;
 
+vec3 CalcPointLight(int light_i, vec3 V, vec3 albedo, vec3 N, float metallic, float roughness, vec3 F0);
+
 void main()
 {   
     vec3 albedo     = texture(texture_albedo1, fs_in.TexCoords).rgb;
@@ -106,7 +108,6 @@ void main()
     float roughness = texture(texture_metallic1, fs_in.TexCoords).g;
     float ao        = texture(texture_ao1, fs_in.TexCoords).r;
 
-    //vec3 N = normalize(fs_in.Normal);
     vec3 V = normalize(fs_in.TangentViewPos - fs_in.TangentFragPos);
 
     vec3 F0 = vec3(0.04);
@@ -114,11 +115,25 @@ void main()
 
     vec3 Lo = vec3(0.0);
     for (int i = 0; i < 1; i++) {
+        Lo += CalcPointLight(i, V, albedo, N, metallic, roughness, F0);
+    }
+
+    vec3 ambient = vec3(0.03) * albedo * ao;
+    vec3 color = ambient + Lo;
+    
+    color = color / (color + vec3(1.0));
+    color = pow(color, vec3(1.0/2.2));
+
+    FragColor = vec4(color, 1.0);
+}
+
+vec3 CalcPointLight(int light_i, vec3 V, vec3 albedo, vec3 N, float metallic, float roughness, vec3 F0) {
+        PointLight light = pointLights[light_i];
         vec3 L = normalize(fs_in.TangentLightPos - fs_in.TangentFragPos);
         vec3 H = normalize(V + L);
         float dist = length(fs_in.TangentLightPos - fs_in.TangentFragPos);
         float attenuation = 1.0/(dist*dist);
-        vec3 radiance = pointLights[i].ambient * attenuation;
+        vec3 radiance = light.ambient * attenuation;
 
         float NDF = DistributionGGX(N, H, roughness);
         float G = GeometrySmith(N, V, L, roughness);
@@ -134,14 +149,5 @@ void main()
 
         float NdotL = max(dot(N, L), 0.0);
 
-        Lo += (kD * albedo / PI + specular) * radiance * NdotL;
-    }
-
-    vec3 ambient = vec3(0.03) * albedo * ao;
-    vec3 color = ambient + Lo;
-    
-    color = color / (color + vec3(1.0));
-    color = pow(color, vec3(1.0/2.2));
-
-    FragColor = vec4(color, 1.0);
+        return (kD * albedo / PI + specular) * radiance * NdotL;
 }
