@@ -103,7 +103,7 @@ void main()
     vec3 N = texture(texture_normal1, fs_in.TexCoords).rgb;
     N = normalize(N * 2.0 - 1.0);  // this normal is in tangent space
     float metallic  = texture(texture_metallic1, fs_in.TexCoords).r;
-    float roughness = texture(texture_roughness1, fs_in.TexCoords).r;
+    float roughness = texture(texture_metallic1, fs_in.TexCoords).g;
     float ao        = texture(texture_ao1, fs_in.TexCoords).r;
 
     //vec3 N = normalize(fs_in.Normal);

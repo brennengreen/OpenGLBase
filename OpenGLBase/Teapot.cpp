@@ -124,8 +124,8 @@ void Teapot::_render_pass()
     _meshShader.setVec3("dirLight.diffuse", glm::vec3(RenderVars.dir_light_diff.x, RenderVars.dir_light_diff.y, RenderVars.dir_light_diff.z));
     _meshShader.setVec3("dirLight.specular", glm::vec3(RenderVars.dir_light_spec.x, RenderVars.dir_light_spec.y, RenderVars.dir_light_spec.z));
     // point light 1
-    //_meshShader.setVec3("pointLights[0].position", glm::vec3(RenderVars.light_pos_1.x, RenderVars.light_pos_1.y, RenderVars.light_pos_1.z));
-    _meshShader.setVec3("pointLights[0].position", glm::vec3(-1.0f * glm::cos(_currentFrame),  1.0f * sin(_currentFrame), .5f));
+    _meshShader.setVec3("pointLights[0].position", glm::vec3(RenderVars.light_pos_1.x, RenderVars.light_pos_1.y, RenderVars.light_pos_1.z));
+    //_meshShader.setVec3("pointLights[0].position", glm::vec3(-1.0f * glm::cos(_currentFrame),  1.0f * sin(_currentFrame), .5f));
     _meshShader.setVec3("pointLights[0].ambient", glm::vec3(RenderVars.light_amb_1.x, RenderVars.light_amb_1.y, RenderVars.light_amb_1.z));
     _meshShader.setVec3("pointLights[0].diffuse", glm::vec3(RenderVars.light_diff_1.x, RenderVars.light_diff_1.y, RenderVars.light_diff_1.z));
     _meshShader.setVec3("pointLights[0].specular", glm::vec3(RenderVars.light_spec_1.x, RenderVars.light_spec_1.y, RenderVars.light_spec_1.z));
@@ -169,13 +169,13 @@ void Teapot::_render_pass()
 	/*glActiveTexture(GL_TEXTURE3);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, _depthCubemap);*/
 
-	for (int row = 0; row < 10; ++row) {
+	for (int row = 0; row < 1; ++row) {
 		_meshShader.setFloat("metallic", (float)row / 10.0f);
-		for (int col = 0; col < 10; ++col) {
+		for (int col = 0; col < 1; ++col) {
 			_meshShader.setFloat("roughness", glm::clamp((float)col / 10.0f, 0.05f, 1.0f));
 
 			glm::mat4 model = glm::mat4(1.0f);
-			model = glm::scale(model, glm::vec3(1., 1., 1.));
+			model = glm::scale(model, glm::vec3(.1, .1, .1));
 			model = glm::translate(model, glm::vec3(
 				(col - 5.0f) * 2.5f,
 				(row - 5.0f) * 2.5f,
@@ -283,7 +283,7 @@ void Teapot::_init_pipelines()
 	stbi_set_flip_vertically_on_load(true);
 
 	mScene.mModels.push_back(
-		std::make_shared<Model>((char*)"../Game/Models/Hydrant/hydrant.obj")
+		std::make_shared<Model>((char*)"../Game/Models/SponzaPBR/gltf/Sponza.gltf")
 	);
 
 	mScene.mDirLights.push_back(
