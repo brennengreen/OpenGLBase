@@ -57,7 +57,7 @@ As I learned more about computer graphics and video games a like, I desire more 
 - [ ] Profiling
 - [ ] Geometry Editing and Processing
 - [ ] Advanced Lighting
-  - [ ] Physically Based Rendering
+  - [ ] GLTF Physically Based Rendering
     - [x] Materials
     - [x] Advanced Lighting Maps (Roughness, AO, Metallic, Mask, etc)
     - [ ] Image Based Lighting (Cubemaps)

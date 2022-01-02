@@ -61,7 +61,7 @@ class Teapot {
 public:
 	Teapot();
 	~Teapot();
-	void Draw();
+	void Run();
 	
 	Camera Cam{};
 	Scene mScene;

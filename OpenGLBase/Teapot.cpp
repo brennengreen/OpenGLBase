@@ -86,7 +86,7 @@ void Teapot::_shadow_pass()
     _shadowShader.setVec3("lightPos", lightPos);
 	glm::mat4 model = glm::scale(glm::mat4{ 1.0f }, glm::vec3(RenderVars.model_scale, RenderVars.model_scale, RenderVars.model_scale));
 	_shadowShader.setMat4("model", model);
-	mScene.mModels[0]->Draw(_shadowShader);
+	mScene.mModels[0]->Run(_shadowShader);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -175,14 +175,15 @@ void Teapot::_render_pass()
 			_meshShader.setFloat("roughness", glm::clamp((float)col / 10.0f, 0.05f, 1.0f));
 
 			glm::mat4 model = glm::mat4(1.0f);
-			model = glm::scale(model, glm::vec3(.1, .1, .1));
+			model = glm::scale(model, glm::vec3(1., 1., 1.));
+			model = glm::rotate(model, RenderVars.model_scale, glm::vec3(1., 0., 0.));
 			model = glm::translate(model, glm::vec3(
 				(col - 5.0f) * 2.5f,
 				(row - 5.0f) * 2.5f,
 				0.0f
 			));
 			_meshShader.setMat4("model", model);
-			mScene.mModels[0]->Draw(_meshShader);
+			mScene.mModels[0]->Run(_meshShader);
 		}
 	}
 
@@ -212,10 +213,10 @@ void Teapot::_imgui_pass() {
 		ImGui::Text("Point Light 1 Settings");
 		ImGui::DragFloat3("Position 1", (float*)&RenderVars.light_pos_1);
 		ImGui::ColorEdit3("Ambient 1", (float*)&RenderVars.light_amb_1);
-		/*ImGui::ColorEdit3("Diffuse 1", (float*)&RenderVars.light_diff_1);
+		ImGui::ColorEdit3("Diffuse 1", (float*)&RenderVars.light_diff_1);
 		ImGui::ColorEdit3("Specular 1", (float*)&RenderVars.light_spec_1);
 		ImGui::InputFloat("Linear 1", (float*)&RenderVars.light_linear_1);
-		ImGui::InputFloat("Quadratic 1", (float*)&RenderVars.light_quadratic_1);*/
+		ImGui::InputFloat("Quadratic 1", (float*)&RenderVars.light_quadratic_1);
 
 		ImGui::Text("Point Light 2 Settings");
 		ImGui::DragFloat3("Position 2", (float*)&RenderVars.light_pos_2);
@@ -283,7 +284,7 @@ void Teapot::_init_pipelines()
 	stbi_set_flip_vertically_on_load(true);
 
 	mScene.mModels.push_back(
-		std::make_shared<Model>((char*)"../Game/Models/SponzaPBR/gltf/Sponza.gltf")
+		std::make_shared<Model>((char*)"../Game/Models/Baker/scene.gltf")
 	);
 
 	mScene.mDirLights.push_back(
@@ -338,7 +339,7 @@ void Teapot::_init_pipelines()
 	_meshShader.setInt("shadow_map", 3);*/
 }
 
-void Teapot::Draw()
+void Teapot::Run()
 {
     while (!Application::ShouldTerminate()) {
 		ProcessKeyboardState();

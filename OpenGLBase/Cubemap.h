@@ -139,7 +139,7 @@ public:
 		_shader.setInt("skybox", 0);
 	}
 
-    void Draw(glm::mat4 view, glm::mat4 projection) {
+    void Run(glm::mat4 view, glm::mat4 projection) {
         glDepthFunc(GL_LEQUAL);
         _shader.use();
 		_shader.setMat4("view", view);

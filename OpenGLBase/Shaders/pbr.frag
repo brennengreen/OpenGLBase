@@ -132,7 +132,7 @@ vec3 CalcPointLight(int light_i, vec3 V, vec3 albedo, vec3 N, float metallic, fl
         vec3 L = normalize(fs_in.TangentLightPos - fs_in.TangentFragPos);
         vec3 H = normalize(V + L);
         float dist = length(fs_in.TangentLightPos - fs_in.TangentFragPos);
-        float attenuation = 1.0/(dist*dist);
+        float attenuation = 1.0 / (light.constant + light.linear * dist + light.quadratic * (dist * dist));
         vec3 radiance = light.ambient * attenuation;
 
         float NDF = DistributionGGX(N, H, roughness);

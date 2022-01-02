@@ -115,7 +115,7 @@ public:
     //    // always good practice to set everything back to defaults once configured.
     //    glActiveTexture(GL_TEXTURE0);
     //}
-    void Draw(Shader &shader) 
+    void Run(Shader &shader) 
     {
         // bind appropriate textures
         unsigned int albedoNr   = 1;

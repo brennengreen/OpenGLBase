@@ -6,7 +6,7 @@ int main( int argc, char * argv[] ) {
 	Application::Init();
 
 	Teapot tp_engine;
-	tp_engine.Draw();
+	tp_engine.Run();
 
 	Application::Terminate();
 	return 0;
