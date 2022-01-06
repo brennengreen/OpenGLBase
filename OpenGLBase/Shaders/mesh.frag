@@ -79,6 +79,7 @@ void main()
     vec3 normal;
     if (has_diff) {
         diffuse = texture(texture_diffuse1, fs_in.TexCoords).rgb;
+        if (texture(texture_diffuse1, fs_in.TexCoords).a < 0.5) discard;
     }
     if (has_spec) {
         specular = texture(texture_specular1, fs_in.TexCoords).rrr;

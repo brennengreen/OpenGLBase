@@ -101,6 +101,7 @@ vec3 CalcPointLight(int light_i, vec3 V, vec3 albedo, vec3 N, float metallic, fl
 
 void main()
 {   
+    if (texture(texture_albedo1, fs_in.TexCoords).a < 0.5) discard;
     vec3 albedo     = texture(texture_albedo1, fs_in.TexCoords).rgb;
     vec3 N = texture(texture_normal1, fs_in.TexCoords).rgb;
     N = normalize(N * 2.0 - 1.0);  // this normal is in tangent space

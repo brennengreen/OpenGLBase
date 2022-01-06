@@ -284,7 +284,7 @@ void Teapot::_init_pipelines()
 	stbi_set_flip_vertically_on_load(true);
 
 	mScene.mModels.push_back(
-		std::make_shared<Model>((char*)"../Game/Models/Baker/scene.gltf")
+		std::make_shared<Model>((char*)"../Game/Models/SponzaPBR/gLTF/Sponza.gltf")
 	);
 
 	mScene.mDirLights.push_back(
