@@ -23,8 +23,6 @@ struct PointLight {
     float quadratic;
 	
     vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
 };
 
 uniform mat4 projection;

@@ -34,18 +34,6 @@ struct TeapotImguiConfigurations {
 	ImVec4 light_amb_3 = ImVec4(0.f, 1.f, 0.f, 0.0f);
 	ImVec4 light_amb_4 = ImVec4(0.f, 0.f, 1.f, 0.0f);
 
-	ImVec4 dir_light_diff = ImVec4(0.4f, 0.4f, 0.4f, 0.0f);
-	ImVec4 light_diff_1 = ImVec4(0.f, 0.f, 0.f, 0.0f);
-	ImVec4 light_diff_2 = ImVec4(0.f, 0.f, 0.f, 0.0f);
-	ImVec4 light_diff_3 = ImVec4(0.f, 0.f, 0.f, 0.0f);
-	ImVec4 light_diff_4 = ImVec4(0.f, 0.f, 0.f, 0.0f);
-
-	ImVec4 dir_light_spec = ImVec4(1.0f, 1.0f, 1.0f, 0.0f);
-	ImVec4 light_spec_1 = ImVec4(1.f, 1.f, 1.f, 0.0f);
-	ImVec4 light_spec_2 = ImVec4(1.f, 0.f, 0.f, 0.0f);
-	ImVec4 light_spec_3 = ImVec4(0.f, 1.f, 0.f, 0.0f);
-	ImVec4 light_spec_4 = ImVec4(0.f, 0.f, 1.f, 0.0f);
-
 	float light_linear_1 = 0.00;
 	float light_linear_2 = 1.0;
 	float light_linear_3 = 1.0;

@@ -13,10 +13,7 @@ in VS_OUT {
 
 struct DirLight {
     vec3 direction;
-	
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
+    vec3 ambient;   
 };
 
 struct PointLight {
@@ -25,10 +22,8 @@ struct PointLight {
     float constant;
     float linear;
     float quadratic;
-	
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
+
+    vec3 ambient;       
 };
 
 struct SpotLight {
@@ -41,9 +36,7 @@ struct SpotLight {
     float linear;
     float quadratic;
   
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;       
+    vec3 ambient;       
 };
 
 #define NR_POINT_LIGHTS 4
@@ -123,7 +116,7 @@ void main()
     vec3 color = ambient + Lo;
     
     color = color / (color + vec3(1.0));
-    color = pow(color, vec3(1.0/2.2));
+    color = pow(color, vec3(1.0/1.0));
 
     FragColor = vec4(color, 1.0);
 }

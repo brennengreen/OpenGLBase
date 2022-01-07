@@ -92,6 +92,33 @@ void Teapot::_shadow_pass()
 
 }
 
+
+void renderQuad()
+{
+	unsigned int quadVAO = 0;
+	unsigned int quadVBO;
+    float quadVertices[] = {
+        // positions        // texture Coords
+        -1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
+        -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+            1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
+            1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+    };
+    // setup plane VAO
+    glGenVertexArrays(1, &quadVAO);
+    glGenBuffers(1, &quadVBO);
+    glBindVertexArray(quadVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+    glBindVertexArray(quadVAO);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    glBindVertexArray(0);
+}
+
 void Teapot::_render_pass()
 {
 	glViewport(0, 0, Application::GetWindowExtent().x, Application::GetWindowExtent().y);
@@ -122,15 +149,11 @@ void Teapot::_render_pass()
 		// Direction Light
 		_meshShader.setVec3("dirLight.direction",  glm::vec3(RenderVars.dir_light_pos.x, RenderVars.dir_light_pos.y, RenderVars.dir_light_pos.z));
 		_meshShader.setVec3("dirLight.ambient", glm::vec3(RenderVars.dir_light_amb.x, RenderVars.dir_light_amb.y, RenderVars.dir_light_amb.z));
-		_meshShader.setVec3("dirLight.diffuse", glm::vec3(RenderVars.dir_light_diff.x, RenderVars.dir_light_diff.y, RenderVars.dir_light_diff.z));
-		_meshShader.setVec3("dirLight.specular", glm::vec3(RenderVars.dir_light_spec.x, RenderVars.dir_light_spec.y, RenderVars.dir_light_spec.z));
 		// point light 1
-		//_meshShader.setVec3("pointLights[0].position", glm::vec3(RenderVars.light_pos_1.x, RenderVars.light_pos_1.y, RenderVars.light_pos_1.z));
+		_meshShader.setVec3("pointLights[0].position", glm::vec3(RenderVars.light_pos_1.x, RenderVars.light_pos_1.y, RenderVars.light_pos_1.z));
 		//_meshShader.setVec3("pointLights[0].position", glm::vec3(1200.0f * glm::cos(_currentFrame), 95.f, -30.f));
-		_meshShader.setVec3("pointLights[0].position", glm::vec3(1200.0f, 95.f, -30.f));
+		//_meshShader.setVec3("pointLights[0].position", glm::vec3(1200.0f, 95.f, -30.f));
 		_meshShader.setVec3("pointLights[0].ambient", glm::vec3(RenderVars.light_amb_1.x, RenderVars.light_amb_1.y, RenderVars.light_amb_1.z));
-		_meshShader.setVec3("pointLights[0].diffuse", glm::vec3(RenderVars.light_diff_1.x, RenderVars.light_diff_1.y, RenderVars.light_diff_1.z));
-		_meshShader.setVec3("pointLights[0].specular", glm::vec3(RenderVars.light_spec_1.x, RenderVars.light_spec_1.y, RenderVars.light_spec_1.z));
 		_meshShader.setFloat("pointLights[0].constant", 1.0f);
 		_meshShader.setFloat("pointLights[0].linear", RenderVars.light_linear_1);
 		_meshShader.setFloat("pointLights[0].quadratic", RenderVars.light_quadratic_1);
@@ -138,8 +161,6 @@ void Teapot::_render_pass()
 		//_meshShader.setVec3("pointLights[1].position", glm::vec3(RenderVars.light_pos_2.x, RenderVars.light_pos_2.y, RenderVars.light_pos_2.z));
 		_meshShader.setVec3("pointLights[1].position", glm::vec3(1.0f * glm::cos(_currentFrame),  1.0f * sin(_currentFrame), .5f));
 		_meshShader.setVec3("pointLights[1].ambient", glm::vec3(RenderVars.light_amb_2.x, RenderVars.light_amb_2.y, RenderVars.light_amb_2.z));
-		_meshShader.setVec3("pointLights[1].diffuse", glm::vec3(RenderVars.light_diff_1.x, RenderVars.light_diff_1.y, RenderVars.light_diff_1.z));
-		_meshShader.setVec3("pointLights[1].specular", glm::vec3(RenderVars.light_spec_1.x, RenderVars.light_spec_1.y, RenderVars.light_spec_1.z));
 		_meshShader.setFloat("pointLights[1].constant", 1.0f);
 		_meshShader.setFloat("pointLights[1].linear", RenderVars.light_linear_1);
 		_meshShader.setFloat("pointLights[1].quadratic", RenderVars.light_quadratic_1);
@@ -147,8 +168,6 @@ void Teapot::_render_pass()
 		//_meshShader.setVec3("pointLights[2].position", glm::vec3(RenderVars.light_pos_3.x, RenderVars.light_pos_3.y, RenderVars.light_pos_3.z));
 		_meshShader.setVec3("pointLights[2].position", glm::vec3(-1.0f * glm::cos(_currentFrame), -1.0f * sin(_currentFrame), .5f));
 		_meshShader.setVec3("pointLights[2].ambient", glm::vec3(RenderVars.light_amb_3.x, RenderVars.light_amb_3.y, RenderVars.light_amb_3.z));
-		_meshShader.setVec3("pointLights[2].diffuse", glm::vec3(RenderVars.light_diff_1.x, RenderVars.light_diff_1.y, RenderVars.light_diff_1.z));
-		_meshShader.setVec3("pointLights[2].specular", glm::vec3(RenderVars.light_spec_1.x, RenderVars.light_spec_1.y, RenderVars.light_spec_1.z));
 		_meshShader.setFloat("pointLights[2].constant", 1.0f);
 		_meshShader.setFloat("pointLights[2].linear", RenderVars.light_linear_1);
 		_meshShader.setFloat("pointLights[2].quadratic", RenderVars.light_quadratic_1);
@@ -156,8 +175,6 @@ void Teapot::_render_pass()
 		//_meshShader.setVec3("pointLights[3].position", glm::vec3(RenderVars.light_pos_4.x, RenderVars.light_pos_4.y, RenderVars.light_pos_4.z));
 		_meshShader.setVec3("pointLights[3].position", glm::vec3(1.0f * glm::cos(_currentFrame), -1.0f * sin(_currentFrame), .5f));
 		_meshShader.setVec3("pointLights[3].ambient", glm::vec3(RenderVars.light_amb_4.x, RenderVars.light_amb_4.y, RenderVars.light_amb_4.z));
-		_meshShader.setVec3("pointLights[3].diffuse", glm::vec3(RenderVars.light_diff_1.x, RenderVars.light_diff_1.y, RenderVars.light_diff_1.z));
-		_meshShader.setVec3("pointLights[3].specular", glm::vec3(RenderVars.light_spec_1.x, RenderVars.light_spec_1.y, RenderVars.light_spec_1.z));
 		_meshShader.setFloat("pointLights[3].constant", 1.0f);
 		_meshShader.setFloat("pointLights[3].linear", RenderVars.light_linear_1);
 		_meshShader.setFloat("pointLights[3].quadratic", RenderVars.light_quadratic_1);
@@ -184,11 +201,12 @@ void Teapot::_render_pass()
     _hdrShader.use();
     glActiveTexture(GL_TEXTURE6);
     glBindTexture(GL_TEXTURE_2D, _colorBuffer);
-    _hdrShader.setBool("hdr", true);
-    _hdrShader.setFloat("exposure", 1.0f);
-    mScene.mModels[0]->Run(_hdrShader);
-    for (auto &_s : mScene.mSkyboxes)
-    _s->Run(glm::mat4(glm::mat3(Cam.GetViewMatrix())), projection);
+    _hdrShader.setBool("hdr", RenderVars.hdr);
+    _hdrShader.setFloat("exposure", RenderVars.exposure);
+    //mScene.mModels[0]->Run(_hdrShader);
+    //for (auto &_s : mScene.mSkyboxes)
+	renderQuad();
+    //_s->Run(glm::mat4(glm::mat3(Cam.GetViewMatrix())), projection);
 	
 }
 
@@ -210,14 +228,10 @@ void Teapot::_imgui_pass() {
 		ImGui::Text("Direction Light Settings");
 		ImGui::DragFloat3("Position", (float*)&RenderVars.dir_light_pos);
 		ImGui::ColorEdit3("Ambient", (float*)&RenderVars.dir_light_amb);
-		ImGui::ColorEdit3("Diffuse", (float*)&RenderVars.dir_light_diff);
-		ImGui::ColorEdit3("Specular", (float*)&RenderVars.dir_light_spec);
 			
 		ImGui::Text("Point Light 1 Settings");
 		ImGui::DragFloat3("Position 1", (float*)&RenderVars.light_pos_1);
 		ImGui::ColorEdit3("Ambient 1", (float*)&RenderVars.light_amb_1);
-		ImGui::ColorEdit3("Diffuse 1", (float*)&RenderVars.light_diff_1);
-		ImGui::ColorEdit3("Specular 1", (float*)&RenderVars.light_spec_1);
 		ImGui::InputFloat("Linear 1", (float*)&RenderVars.light_linear_1);
 		ImGui::InputFloat("Quadratic 1", (float*)&RenderVars.light_quadratic_1);
 
