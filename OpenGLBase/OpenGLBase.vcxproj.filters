@@ -163,5 +163,11 @@
     <None Include="Shaders\pbr.vert">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="Shaders\hdr.frag">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Shaders\hdr.vert">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

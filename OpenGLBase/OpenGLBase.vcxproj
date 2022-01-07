@@ -197,6 +197,8 @@
     <ClInclude Include="Teapot.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Shaders\hdr.frag" />
+    <None Include="Shaders\hdr.vert" />
     <None Include="Shaders\mesh.frag" />
     <None Include="Shaders\mesh.vert" />
     <None Include="Shaders\pbr.frag" />

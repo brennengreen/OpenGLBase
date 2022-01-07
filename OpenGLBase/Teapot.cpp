@@ -100,7 +100,6 @@ void Teapot::_render_pass()
 	//RenderVars.light_pos_1 = ImVec4(100.f*glm::cos(_currentFrame/2.0f), 5.0, 0.0, 1.0);
 	//RenderVars.dir_light_pos = ImVec4(0.0, 700.0f, 600.0f + 400*glm::abs(cos(glfwGetTime() / 10.0f)), 0.0);
 
-	_meshShader.use();
 
 
 	/*glm::mat4 lightProjection, lightView;
@@ -112,84 +111,85 @@ void Teapot::_render_pass()
 	lightSpaceMatrix = lightProjection * lightView;
 	_meshShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);*/
 
-	glm::mat4 view = Cam.GetViewMatrix();
-	glm::mat4 projection = Cam.GetProjectionMatrix();
-	//glm::mat4 model = glm::mat4(1.0)f;
-	_meshShader.setMat4("view", view);
-	_meshShader.setMat4("projection", projection);
 
-	// Direction Light
-	_meshShader.setVec3("dirLight.direction",  glm::vec3(RenderVars.dir_light_pos.x, RenderVars.dir_light_pos.y, RenderVars.dir_light_pos.z));
-    _meshShader.setVec3("dirLight.ambient", glm::vec3(RenderVars.dir_light_amb.x, RenderVars.dir_light_amb.y, RenderVars.dir_light_amb.z));
-    _meshShader.setVec3("dirLight.diffuse", glm::vec3(RenderVars.dir_light_diff.x, RenderVars.dir_light_diff.y, RenderVars.dir_light_diff.z));
-    _meshShader.setVec3("dirLight.specular", glm::vec3(RenderVars.dir_light_spec.x, RenderVars.dir_light_spec.y, RenderVars.dir_light_spec.z));
-    // point light 1
-    _meshShader.setVec3("pointLights[0].position", glm::vec3(RenderVars.light_pos_1.x, RenderVars.light_pos_1.y, RenderVars.light_pos_1.z));
-    //_meshShader.setVec3("pointLights[0].position", glm::vec3(-1.0f * glm::cos(_currentFrame),  1.0f * sin(_currentFrame), .5f));
-    _meshShader.setVec3("pointLights[0].ambient", glm::vec3(RenderVars.light_amb_1.x, RenderVars.light_amb_1.y, RenderVars.light_amb_1.z));
-    _meshShader.setVec3("pointLights[0].diffuse", glm::vec3(RenderVars.light_diff_1.x, RenderVars.light_diff_1.y, RenderVars.light_diff_1.z));
-    _meshShader.setVec3("pointLights[0].specular", glm::vec3(RenderVars.light_spec_1.x, RenderVars.light_spec_1.y, RenderVars.light_spec_1.z));
-    _meshShader.setFloat("pointLights[0].constant", 1.0f);
-    _meshShader.setFloat("pointLights[0].linear", RenderVars.light_linear_1);
-    _meshShader.setFloat("pointLights[0].quadratic", RenderVars.light_quadratic_1);
-	// point light 2
-    //_meshShader.setVec3("pointLights[1].position", glm::vec3(RenderVars.light_pos_2.x, RenderVars.light_pos_2.y, RenderVars.light_pos_2.z));
-    _meshShader.setVec3("pointLights[1].position", glm::vec3(1.0f * glm::cos(_currentFrame),  1.0f * sin(_currentFrame), .5f));
-    _meshShader.setVec3("pointLights[1].ambient", glm::vec3(RenderVars.light_amb_2.x, RenderVars.light_amb_2.y, RenderVars.light_amb_2.z));
-    _meshShader.setVec3("pointLights[1].diffuse", glm::vec3(RenderVars.light_diff_1.x, RenderVars.light_diff_1.y, RenderVars.light_diff_1.z));
-    _meshShader.setVec3("pointLights[1].specular", glm::vec3(RenderVars.light_spec_1.x, RenderVars.light_spec_1.y, RenderVars.light_spec_1.z));
-    _meshShader.setFloat("pointLights[1].constant", 1.0f);
-    _meshShader.setFloat("pointLights[1].linear", RenderVars.light_linear_1);
-    _meshShader.setFloat("pointLights[1].quadratic", RenderVars.light_quadratic_1);
-	// point light 3
-    //_meshShader.setVec3("pointLights[2].position", glm::vec3(RenderVars.light_pos_3.x, RenderVars.light_pos_3.y, RenderVars.light_pos_3.z));
-    _meshShader.setVec3("pointLights[2].position", glm::vec3(-1.0f * glm::cos(_currentFrame), -1.0f * sin(_currentFrame), .5f));
-    _meshShader.setVec3("pointLights[2].ambient", glm::vec3(RenderVars.light_amb_3.x, RenderVars.light_amb_3.y, RenderVars.light_amb_3.z));
-    _meshShader.setVec3("pointLights[2].diffuse", glm::vec3(RenderVars.light_diff_1.x, RenderVars.light_diff_1.y, RenderVars.light_diff_1.z));
-    _meshShader.setVec3("pointLights[2].specular", glm::vec3(RenderVars.light_spec_1.x, RenderVars.light_spec_1.y, RenderVars.light_spec_1.z));
-    _meshShader.setFloat("pointLights[2].constant", 1.0f);
-    _meshShader.setFloat("pointLights[2].linear", RenderVars.light_linear_1);
-    _meshShader.setFloat("pointLights[2].quadratic", RenderVars.light_quadratic_1);
-	// point light 4
-    //_meshShader.setVec3("pointLights[3].position", glm::vec3(RenderVars.light_pos_4.x, RenderVars.light_pos_4.y, RenderVars.light_pos_4.z));
-    _meshShader.setVec3("pointLights[3].position", glm::vec3(1.0f * glm::cos(_currentFrame), -1.0f * sin(_currentFrame), .5f));
-    _meshShader.setVec3("pointLights[3].ambient", glm::vec3(RenderVars.light_amb_4.x, RenderVars.light_amb_4.y, RenderVars.light_amb_4.z));
-    _meshShader.setVec3("pointLights[3].diffuse", glm::vec3(RenderVars.light_diff_1.x, RenderVars.light_diff_1.y, RenderVars.light_diff_1.z));
-    _meshShader.setVec3("pointLights[3].specular", glm::vec3(RenderVars.light_spec_1.x, RenderVars.light_spec_1.y, RenderVars.light_spec_1.z));
-    _meshShader.setFloat("pointLights[3].constant", 1.0f);
-    _meshShader.setFloat("pointLights[3].linear", RenderVars.light_linear_1);
-    _meshShader.setFloat("pointLights[3].quadratic", RenderVars.light_quadratic_1);
+	glBindFramebuffer(GL_FRAMEBUFFER, _hdrFBO);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glm::mat4 view = Cam.GetViewMatrix();
+		glm::mat4 projection = Cam.GetProjectionMatrix();
+		_meshShader.use();
+		_meshShader.setMat4("view", view);
+		_meshShader.setMat4("projection", projection);
+		// Direction Light
+		_meshShader.setVec3("dirLight.direction",  glm::vec3(RenderVars.dir_light_pos.x, RenderVars.dir_light_pos.y, RenderVars.dir_light_pos.z));
+		_meshShader.setVec3("dirLight.ambient", glm::vec3(RenderVars.dir_light_amb.x, RenderVars.dir_light_amb.y, RenderVars.dir_light_amb.z));
+		_meshShader.setVec3("dirLight.diffuse", glm::vec3(RenderVars.dir_light_diff.x, RenderVars.dir_light_diff.y, RenderVars.dir_light_diff.z));
+		_meshShader.setVec3("dirLight.specular", glm::vec3(RenderVars.dir_light_spec.x, RenderVars.dir_light_spec.y, RenderVars.dir_light_spec.z));
+		// point light 1
+		//_meshShader.setVec3("pointLights[0].position", glm::vec3(RenderVars.light_pos_1.x, RenderVars.light_pos_1.y, RenderVars.light_pos_1.z));
+		//_meshShader.setVec3("pointLights[0].position", glm::vec3(1200.0f * glm::cos(_currentFrame), 95.f, -30.f));
+		_meshShader.setVec3("pointLights[0].position", glm::vec3(1200.0f, 95.f, -30.f));
+		_meshShader.setVec3("pointLights[0].ambient", glm::vec3(RenderVars.light_amb_1.x, RenderVars.light_amb_1.y, RenderVars.light_amb_1.z));
+		_meshShader.setVec3("pointLights[0].diffuse", glm::vec3(RenderVars.light_diff_1.x, RenderVars.light_diff_1.y, RenderVars.light_diff_1.z));
+		_meshShader.setVec3("pointLights[0].specular", glm::vec3(RenderVars.light_spec_1.x, RenderVars.light_spec_1.y, RenderVars.light_spec_1.z));
+		_meshShader.setFloat("pointLights[0].constant", 1.0f);
+		_meshShader.setFloat("pointLights[0].linear", RenderVars.light_linear_1);
+		_meshShader.setFloat("pointLights[0].quadratic", RenderVars.light_quadratic_1);
+		// point light 2
+		//_meshShader.setVec3("pointLights[1].position", glm::vec3(RenderVars.light_pos_2.x, RenderVars.light_pos_2.y, RenderVars.light_pos_2.z));
+		_meshShader.setVec3("pointLights[1].position", glm::vec3(1.0f * glm::cos(_currentFrame),  1.0f * sin(_currentFrame), .5f));
+		_meshShader.setVec3("pointLights[1].ambient", glm::vec3(RenderVars.light_amb_2.x, RenderVars.light_amb_2.y, RenderVars.light_amb_2.z));
+		_meshShader.setVec3("pointLights[1].diffuse", glm::vec3(RenderVars.light_diff_1.x, RenderVars.light_diff_1.y, RenderVars.light_diff_1.z));
+		_meshShader.setVec3("pointLights[1].specular", glm::vec3(RenderVars.light_spec_1.x, RenderVars.light_spec_1.y, RenderVars.light_spec_1.z));
+		_meshShader.setFloat("pointLights[1].constant", 1.0f);
+		_meshShader.setFloat("pointLights[1].linear", RenderVars.light_linear_1);
+		_meshShader.setFloat("pointLights[1].quadratic", RenderVars.light_quadratic_1);
+		// point light 3
+		//_meshShader.setVec3("pointLights[2].position", glm::vec3(RenderVars.light_pos_3.x, RenderVars.light_pos_3.y, RenderVars.light_pos_3.z));
+		_meshShader.setVec3("pointLights[2].position", glm::vec3(-1.0f * glm::cos(_currentFrame), -1.0f * sin(_currentFrame), .5f));
+		_meshShader.setVec3("pointLights[2].ambient", glm::vec3(RenderVars.light_amb_3.x, RenderVars.light_amb_3.y, RenderVars.light_amb_3.z));
+		_meshShader.setVec3("pointLights[2].diffuse", glm::vec3(RenderVars.light_diff_1.x, RenderVars.light_diff_1.y, RenderVars.light_diff_1.z));
+		_meshShader.setVec3("pointLights[2].specular", glm::vec3(RenderVars.light_spec_1.x, RenderVars.light_spec_1.y, RenderVars.light_spec_1.z));
+		_meshShader.setFloat("pointLights[2].constant", 1.0f);
+		_meshShader.setFloat("pointLights[2].linear", RenderVars.light_linear_1);
+		_meshShader.setFloat("pointLights[2].quadratic", RenderVars.light_quadratic_1);
+		// point light 4
+		//_meshShader.setVec3("pointLights[3].position", glm::vec3(RenderVars.light_pos_4.x, RenderVars.light_pos_4.y, RenderVars.light_pos_4.z));
+		_meshShader.setVec3("pointLights[3].position", glm::vec3(1.0f * glm::cos(_currentFrame), -1.0f * sin(_currentFrame), .5f));
+		_meshShader.setVec3("pointLights[3].ambient", glm::vec3(RenderVars.light_amb_4.x, RenderVars.light_amb_4.y, RenderVars.light_amb_4.z));
+		_meshShader.setVec3("pointLights[3].diffuse", glm::vec3(RenderVars.light_diff_1.x, RenderVars.light_diff_1.y, RenderVars.light_diff_1.z));
+		_meshShader.setVec3("pointLights[3].specular", glm::vec3(RenderVars.light_spec_1.x, RenderVars.light_spec_1.y, RenderVars.light_spec_1.z));
+		_meshShader.setFloat("pointLights[3].constant", 1.0f);
+		_meshShader.setFloat("pointLights[3].linear", RenderVars.light_linear_1);
+		_meshShader.setFloat("pointLights[3].quadratic", RenderVars.light_quadratic_1);
+		
+		_meshShader.setVec3("viewPos", Cam.Position);
+		//_meshShader.setFloat("far_plane", 2500.0f);
 
-	_meshShader.setVec3("viewPos", Cam.Position);
-	//_meshShader.setMat4("model", model);
-	_meshShader.setVec3("albedo", 0.2f, 0.2f, 0.2f);
-    _meshShader.setFloat("ao", 1.0f);
-	//_meshShader.setFloat("far_plane", 2500.0f);
+		
 
-	/*glActiveTexture(GL_TEXTURE3);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, _depthCubemap);*/
+		/*glActiveTexture(GL_TEXTURE3);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, _depthCubemap);*/
 
-	for (int row = 0; row < 1; ++row) {
-		_meshShader.setFloat("metallic", (float)row / 10.0f);
-		for (int col = 0; col < 1; ++col) {
-			_meshShader.setFloat("roughness", glm::clamp((float)col / 10.0f, 0.05f, 1.0f));
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::scale(model, glm::vec3(1., 1., 1.));
+		model = glm::rotate(model, RenderVars.model_scale, glm::vec3(1., 0., 0.));
+		_meshShader.setMat4("model", model);
+		mScene.mModels[0]->Run(_meshShader);
 
-			glm::mat4 model = glm::mat4(1.0f);
-			model = glm::scale(model, glm::vec3(1., 1., 1.));
-			model = glm::rotate(model, RenderVars.model_scale, glm::vec3(1., 0., 0.));
-			model = glm::translate(model, glm::vec3(
-				(col - 5.0f) * 2.5f,
-				(row - 5.0f) * 2.5f,
-				0.0f
-			));
-			_meshShader.setMat4("model", model);
-			mScene.mModels[0]->Run(_meshShader);
-		}
-	}
+		for (auto &_s : mScene.mSkyboxes)
+		_s->Run(glm::mat4(glm::mat3(Cam.GetViewMatrix())), projection);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-
-	/*for (auto &_s : mScene.mSkyboxes)
-		_s->Draw(glm::mat4(glm::mat3(Cam.GetViewMatrix())), projection);*/
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    _hdrShader.use();
+    glActiveTexture(GL_TEXTURE6);
+    glBindTexture(GL_TEXTURE_2D, _colorBuffer);
+    _hdrShader.setBool("hdr", true);
+    _hdrShader.setFloat("exposure", 1.0f);
+    mScene.mModels[0]->Run(_hdrShader);
+    for (auto &_s : mScene.mSkyboxes)
+    _s->Run(glm::mat4(glm::mat3(Cam.GetViewMatrix())), projection);
+	
 }
 
 void Teapot::_imgui_pass() {
@@ -203,6 +203,9 @@ void Teapot::_imgui_pass() {
 		ImGui::Checkbox("Wireframe", &RenderVars.wireframe);
         ImGui::ColorEdit3("clear color", (float*)&RenderVars.clear_color);
 		ImGui::InputFloat("Model Scale", (float*)&RenderVars.model_scale);
+		ImGui::Checkbox("HDR", &RenderVars.hdr);
+		ImGui::InputFloat("Exposure", (float*)&RenderVars.exposure);
+
 
 		ImGui::Text("Direction Light Settings");
 		ImGui::DragFloat3("Position", (float*)&RenderVars.dir_light_pos);
@@ -300,6 +303,7 @@ void Teapot::_init_pipelines()
 	);
 
 	_meshShader = Shader("Shaders/pbr.vert", "Shaders/pbr.frag");
+	_hdrShader = Shader("Shaders/hdr.vert", "Shaders/hdr.frag");
 	//_shadowShader = Shader("Shaders/shadow_omni.vert", "Shaders/shadow_omni.frag", "Shaders/shadow_omni.geom");
 
 	/*glGenFramebuffers(1, &_FBO);
@@ -337,6 +341,25 @@ void Teapot::_init_pipelines()
 
 	/*_meshShader.use();
 	_meshShader.setInt("shadow_map", 3);*/
+
+	glGenFramebuffers(1, &_hdrFBO);
+	glGenTextures(1, &_colorBuffer);
+	glBindTexture(GL_TEXTURE_2D, _colorBuffer);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, Application::GetWindowExtent().x, Application::GetWindowExtent().y, 0, GL_RGBA, GL_FLOAT, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glGenRenderbuffers(1, &_rboDepth);
+    glBindRenderbuffer(GL_RENDERBUFFER, _rboDepth);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, Application::GetWindowExtent().x, Application::GetWindowExtent().y);
+	glBindFramebuffer(GL_FRAMEBUFFER, _hdrFBO);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _colorBuffer, 0);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _rboDepth);
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+        std::cout << "Framebuffer not complete!" << std::endl;
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	_hdrShader.use();
+	_hdrShader.setInt("hdrBuffer", 6);
 }
 
 void Teapot::Run()

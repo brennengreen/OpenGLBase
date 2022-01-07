@@ -18,6 +18,8 @@
 struct TeapotImguiConfigurations {
 	ImVec4 clear_color = ImVec4(0.14f, 0.14f, 0.14f, 1.00f);
 	bool wireframe = false;
+	bool hdr = false;
+	float exposure = 1.0f;
 
 	ImVec4 dir_light_pos = ImVec4(5.f, 700.f, 800.f, 0.0f);
 	ImVec4 light_pos_1 = ImVec4(-1.0f,  1.0f, 1.0f, 0.0f);
@@ -44,17 +46,17 @@ struct TeapotImguiConfigurations {
 	ImVec4 light_spec_3 = ImVec4(0.f, 1.f, 0.f, 0.0f);
 	ImVec4 light_spec_4 = ImVec4(0.f, 0.f, 1.f, 0.0f);
 
-	float light_linear_1 = 0.014;
+	float light_linear_1 = 0.00;
 	float light_linear_2 = 1.0;
 	float light_linear_3 = 1.0;
 	float light_linear_4 = 1.0;
 
-	float light_quadratic_1 = 0.000007;
+	float light_quadratic_1 = 0.00001;
 	float light_quadratic_2 = 1.0;
 	float light_quadratic_3 = 1.0;
 	float light_quadratic_4 = 1.0;
 
-	float model_scale = 1.0;
+	float model_scale = 0.0;
 };
 
 class Teapot {
@@ -81,8 +83,13 @@ private:
 	GLuint _FBO = 0;
 	GLuint _depthCubemapFBO = 0;
 	GLuint _depthTexture;
-
 	GLuint _depthCubemap;
+
+	// HDR Stuff
+	Shader _hdrShader;
+	GLuint _hdrFBO;
+	GLuint _rboDepth;
+	GLuint _colorBuffer;
 
 	GLdouble _deltaTime {0};
 	GLdouble _currentFrame {0};
