@@ -52,8 +52,10 @@ As I learned more about computer graphics and video games a like, I desire more 
   - [x] Light Casters
   - [x] Lighting Maps (Diffuse, Specular, Bump/Normal)
   - [x] Shadows
+  - [ ] Deffered Rendering
   - [ ] SSAO
-  - [ ] HDR
+  - [x] HDR
+  - [x] Tonemapping
 - [ ] Profiling
 - [ ] Geometry Editing and Processing
 - [ ] Advanced Lighting
@@ -62,7 +64,6 @@ As I learned more about computer graphics and video games a like, I desire more 
     - [x] Advanced Lighting Maps (Roughness, AO, Metallic, Mask, etc)
     - [ ] Image Based Lighting (Cubemaps)
   - [ ] Sceenspace Reflections
-  - [ ] Tonemapping
   - [ ] Optional Global Illumination (Voxel Cone Tracing)
 - [ ] Physics
 - [ ] Entity Component System
