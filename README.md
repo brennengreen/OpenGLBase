@@ -47,13 +47,11 @@ As I learned more about computer graphics and video games a like, I desire more 
 - [x] Geometry Importer
 - [ ] Scenegraph
 - [ ] Rendering API Abstraction
-- [ ] Lighting Update
+- [x] Lighting Update
   - [x] Materials
   - [x] Light Casters
   - [x] Lighting Maps (Diffuse, Specular, Bump/Normal)
   - [x] Shadows
-  - [ ] Deffered Rendering
-  - [ ] SSAO
   - [x] HDR
   - [x] Tonemapping
 - [ ] Profiling
@@ -63,6 +61,8 @@ As I learned more about computer graphics and video games a like, I desire more 
     - [x] Materials
     - [x] Advanced Lighting Maps (Roughness, AO, Metallic, Mask, etc)
     - [ ] Image Based Lighting (Cubemaps)
+  - [ ] Deffered Rendering
+  - [ ] SSAO
   - [ ] Sceenspace Reflections
   - [ ] Optional Global Illumination (Voxel Cone Tracing)
 - [ ] Physics
