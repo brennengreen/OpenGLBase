@@ -86,6 +86,6 @@ As I learned more about computer graphics and video games a like, I desire more 
 <!-- CONTACT -->
 ## Contact
 
-Brennen Green - [@TheBrennenGreen](https://twitter.com/your_username) - brennengreen@outlook.com
+Brennen Green - [@TheBrennenGreen](https://twitter.com/TheBrennenGreen) - brennengreen@outlook.com
 
 <p align="right">(<a href="#top">back to top</a>)</p>
